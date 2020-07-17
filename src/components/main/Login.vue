@@ -2,9 +2,9 @@
   <div>
     <form>
       <label for="email">E-mail</label>
-      <input type="text" name="email" v-model="email" />
+      <input type="text" name="email" v-model="loginInfo.email" />
       <label for="password">Password</label>
-      <input type="password" name="password" v-model="password" />
+      <input type="password" name="password" v-model="loginInfo.password" />
       <button type="submit" @click.prevent="login">Login</button>
       <button type="button">Forgot Password</button>
     </form>
@@ -15,14 +15,21 @@
 export default {
   data() {
     return {
-      email: "",
-      password: ""
+      loginInfo: {
+        email: "",
+        password: ""
+      }
     };
   },
   methods: {
     login() {
-      console.log(this.email);
-      console.log(this.password);
+      this.$http.post('http://localhost:4000/login', this.loginInfo)
+        .then(res => {
+          console.log(res);
+          }, err => {
+            console.log('error');
+            console.log(err);
+          });
     }
   }
 };
