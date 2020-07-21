@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <ui class="footer-links">
+    <ul class="footer-links">
       <li>
         <a class="footer-link" href="https://github.com/sudbasnet/Callbreak-REST-Backend">Github</a>
       </li>
@@ -8,7 +8,7 @@
         <a class="footer-link" href="https://www.linkedin.com/in/sudeepbasnet/">LinkedIn</a>
       </li>
       <li></li>
-    </ui>
+    </ul>
   </footer>
 </template>
 

@@ -2,7 +2,6 @@
   <div id="app">
     <app-header></app-header>
     <main class="main">
-      <img alt="Vue logo" src="./assets/logo.png" />
       <app-login-form></app-login-form>
     </main>
     <app-footer></app-footer>
@@ -17,8 +16,8 @@ import Footer from "./components/shared/Footer.vue";
 export default {
   name: "App",
   components: {
-    "app-login-form": Login,
     "app-header": Header,
+    "app-login-form": Login,
     "app-footer": Footer
   }
 };

@@ -84,9 +84,19 @@ a.disabled {
 
 .main {
     grid-area: main;
+    display: flex;
+    place-items: center;
 }
 
 .footer {
     grid-area: footer;
     margin-bottom: 0;
 }
+
+.login-form{
+    max-width: 520px;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column ;
+    padding: 20px;
+  }
