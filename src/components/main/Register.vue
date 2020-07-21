@@ -18,14 +18,18 @@
 export default {
   data() {
     return {
+      name: "",
       email: "",
-      password: ""
+      password: "",
+      confirmPassword: ""
     };
   },
   methods: {
     login() {
+      console.log(this.name);
       console.log(this.email);
       console.log(this.password);
+      console.log(this.confirmPassword);
     }
   }
 };
