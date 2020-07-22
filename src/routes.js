@@ -1,20 +1,36 @@
-import Login from './components/main/Login.vue';
-import Register from './components/main/Register.vue';
-import Home from './components/main/Home.vue';
+// import Login from './components/main/Login.vue';
+// import Register from './components/main/Register.vue';
+// import Home from './components/main/Home.vue';
+
+// Lazy loading
+const Home = resolve => {
+    require.ensure(['./components/main/Home.vue'], () => {
+        resolve(require('./components/main/Home.vue'));
+    });
+};
+
+const Login = resolve => {
+    require.ensure(['./components/main/Login.vue'], () => {
+        resolve(require('./components/main/Login.vue'));
+    });
+};
+
+const Register = resolve => {
+    require.ensure(['./components/main/Register.vue'], () => {
+        resolve(require('./components/main/Register.vue'));
+    });
+};
 
 export const routes = [
     {
-        mode: 'history',
         path: '',
         component: Home
     },
     {
-        mode: 'history',
         path: '/login',
         component: Login
     },
     {
-        mode: 'history',
         path: '/register',
         component: Register
     }

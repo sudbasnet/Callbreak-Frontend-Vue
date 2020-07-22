@@ -93,10 +93,15 @@ a.disabled {
     margin-bottom: 0;
 }
 
-.login-form{
+.login-form, .register-form {
     max-width: 520px;
     min-width: 300px;
-    display: flex;
-    flex-direction: column ;
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 20px;
     padding: 20px;
+  }
+
+  .login-form-group, .register-form-group {
+      display: grid;
   }

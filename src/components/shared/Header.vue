@@ -3,27 +3,31 @@
     <nav class="nav">
       <div class="navbar-block">
         <h1 style="font-size: 25px; padding: 10px;">Callbreak</h1>
-
         <ul class="nav-links">
-          <li>
-            <a class="nav-link" href="#">Login</a>
-          </li>
-          <li>
-            <a class="nav-link" href="#">Logout</a>
-          </li>
-          <li>
-            <a class="nav-link" href="#">Register</a>
-          </li>
+          <router-link to="/login" tag="li" active-class="active">
+            <a class="nav-link">Login</a>
+          </router-link>
+          <router-link to="/register" tag="li" active-class="active">
+            <a class="nav-link">Register</a>
+          </router-link>
+          <router-link to="/" tag="li" active-class="active" exact>
+            <a class="nav-link" href="#" @click="logout">Logout</a>
+          </router-link>
         </ul>
       </div>
     </nav>
   </header>
 </template>
 
-
-
 <script>
-export default {};
+export default {
+  methods: {
+    logout() {
+      console.log("Logged Out");
+      this.$router.replace("/");
+    }
+  }
+};
 </script>
 
 <style scoped>
