@@ -36,18 +36,7 @@ export default {
   },
   methods: {
     register() {
-      console.log(this.registrationInfo);
-      this.$http
-        .put("http://localhost:3000/user/register", this.registrationInfo)
-        .then(
-          (res) => {
-            console.log(res.body);
-          },
-          (err) => {
-            console.log("error");
-            console.log(err);
-          }
-        );
+      this.$store.dispatch("login", this.registrationInfo);
     },
   },
 };

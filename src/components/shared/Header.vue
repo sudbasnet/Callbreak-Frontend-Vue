@@ -23,10 +23,12 @@
 export default {
   methods: {
     logout() {
-      console.log("Logged Out");
-      this.$router.replace("/");
-    }
-  }
+      this.$store.dispatch("logout");
+      if (this.$router.currentRoute.path != "/") {
+        this.$router.push("/");
+      }
+    },
+  },
 };
 </script>
 

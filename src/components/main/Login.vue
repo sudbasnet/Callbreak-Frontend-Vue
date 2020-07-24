@@ -27,15 +27,7 @@ export default {
   },
   methods: {
     login() {
-      this.$http.post("http://localhost:3000/user/login", this.loginInfo).then(
-        (res) => {
-          console.log(res.body);
-        },
-        (err) => {
-          console.log("error");
-          console.log(err);
-        }
-      );
+      this.$store.dispatch("login", this.loginInfo);
     },
   },
 };
