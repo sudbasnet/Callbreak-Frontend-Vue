@@ -6,15 +6,9 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        user: {
-            _id: "",
-            email: "",
-            name: "",
-            token: null
-        }
+        user: { _id: null, email: null, name: null, token: null }
     },
     actions: {
-        // its coming out of context.commit
         register(userSignUpData) {
             axios
                 .put("/user/register", userSignUpData)
@@ -26,12 +20,16 @@ export const store = new Vuex.Store({
                     console.log(err);
                 });
         },
+        // its coming out of context.commit
         login({ commit }, authData) {
             axios
                 .post("/user/login", authData)
                 .then((res) => {
-                    // console.log(res.data);
-                    commit('authUser', res.data);
+                    commit('authUser', { id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token });
+                    localStorage.setItem('userId', res.data._id);
+                    localStorage.setItem('jwtToken', res.data.token);
+                    localStorage.setItem('userEmail', res.data.email);
+                    localStorage.setItem('userName', res.data.name)
                 })
                 .catch((err) => {
                     console.log("error");
@@ -39,27 +37,38 @@ export const store = new Vuex.Store({
                 });
         },
         logout({ commit }) {
-            commit('logoutUser', false);
+            console.log('Logging Out');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('jwtToken');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userEmail');
+            commit('logoutUser');
+        },
+        autoLogin({ commit }) {
+            commit('authUser', {
+                id: localStorage.getItem('userId'),
+                name: localStorage.getItem('userName'),
+                email: localStorage.getItem('userEmail'),
+                token: localStorage.getItem('jwtToken')
+            });
         }
     },
     // getters and mutations do not run async code
     // async tasks should be done by Actions first 
     getters: {
-
+        user(state) {
+            return state.user;
+        }
     },
     mutations: {
         authUser(state, authData) {
             state.user = authData;
-            axios.defaults.headers.common['Authentication'] = 'Bearer ' + state.user.token;
+            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.user.token;
         },
+        // not async, dont really need to add logout to mutations
+        // but might need to, in the future
         logoutUser(state) {
-            state.user = {
-                _id: "",
-                email: "",
-                name: "",
-                token: null
-            };
-            axios.defaults.headers.common['Authentication'] = 'Bearer ';
+            state.user = { _id: null, email: null, name: null, token: null };
         }
     }
 });
