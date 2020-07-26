@@ -51,6 +51,11 @@ export const store = new Vuex.Store({
                 email: localStorage.getItem('userEmail'),
                 token: localStorage.getItem('jwtToken')
             });
+        },
+        requestResetPassword({ commit }, email) {
+            axios.get('/request-password-reset', { email: email })
+                .then(res => console.log(res.data))
+                .catch(err => console.log(err));
         }
     },
     // getters and mutations do not run async code

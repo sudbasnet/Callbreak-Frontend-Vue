@@ -28,6 +28,7 @@ export default {
   methods: {
     login() {
       this.$store.dispatch("login", this.loginInfo);
+      this.$router.push("/");
     },
   },
 };

@@ -5,7 +5,6 @@
         <router-link to="/" tag="h1">
           <a class="home-link active">CallBreak</a>
         </router-link>
-        <h1 v-if="loggedInUser" style="font-size: 25px; padding: 10px;">Hi {{ loggedInUser }}</h1>
         <ul class="nav-links">
           <li>
             <router-link
@@ -42,6 +41,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
+      this.$router.push("/");
     },
   },
 };

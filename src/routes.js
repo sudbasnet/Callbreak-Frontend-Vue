@@ -21,6 +21,18 @@ const Register = resolve => {
     });
 };
 
+const AccountSettings = resolve => {
+    require.ensure(['./components/main/user/AccountSettings.vue'], () => {
+        resolve(require('./components/main/user/AccountSettings.vue'));
+    });
+};
+
+const Profile = resolve => {
+    require.ensure(['./components/main/user/Profile.vue'], () => {
+        resolve(require('./components/main/user/Profile.vue'));
+    });
+};
+
 export const routes = [
     {
         path: '',
@@ -33,5 +45,13 @@ export const routes = [
     {
         path: '/register',
         component: Register
+    },
+    {
+        path: '/account-settings',
+        component: AccountSettings
+    },
+    {
+        path: '/profile',
+        component: Profile
     }
 ];
