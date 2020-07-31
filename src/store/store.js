@@ -6,7 +6,9 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        user: { _id: null, email: null, name: null, token: null }
+        user: { _id: null, email: null, name: null, token: null },
+        game: { status: 'off', gameType: null }
+        // game status can be 'on', 'off', 'waiting'
     },
     actions: {
         register(userSignUpData) {
@@ -25,11 +27,8 @@ export const store = new Vuex.Store({
             axios
                 .post("/user/login", authData)
                 .then((res) => {
-                    commit('authUser', { id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token });
-                    localStorage.setItem('userId', res.data._id);
-                    localStorage.setItem('jwtToken', res.data.token);
-                    localStorage.setItem('userEmail', res.data.email);
-                    localStorage.setItem('userName', res.data.name)
+                    commit('authUser', { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token });
+                    localStorage.setItem('callbreak-app-user', JSON.stringify({ _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token }));
                 })
                 .catch((err) => {
                     console.log("error");
@@ -38,24 +37,29 @@ export const store = new Vuex.Store({
         },
         logout({ commit }) {
             console.log('Logging Out');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('jwtToken');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userEmail');
+            localStorage.removeItem('callbreak-app-user');
             commit('logoutUser');
         },
         autoLogin({ commit }) {
-            commit('authUser', {
-                id: localStorage.getItem('userId'),
-                name: localStorage.getItem('userName'),
-                email: localStorage.getItem('userEmail'),
-                token: localStorage.getItem('jwtToken')
-            });
+            commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')));
         },
-        requestResetPassword({ commit }, email) {
-            axios.get('/request-password-reset', { email: email })
-                .then(res => console.log(res.data))
-                .catch(err => console.log(err));
+        // requestResetPassword({ commit }, email) {
+        //     axios.get('/request-password-reset', { email: email })
+        //         .then(res => console.log(res.data))
+        //         .catch(err => console.log(err));
+        // }
+        createGameInstance({ commit }, selectedGame) {
+            if (selectedGame === 'Callbreak') {
+                axios.get("game/callbreak/new", {
+                    headers: {
+                        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                    }
+                })
+                    .then(res => {
+                        console.log(res);
+                        commit('newGame', selectedGame);
+                    })
+            }
         }
     },
     // getters and mutations do not run async code
@@ -63,17 +67,33 @@ export const store = new Vuex.Store({
     getters: {
         user(state) {
             return state.user;
+        },
+        status(state) {
+            return state.game.status;
         }
     },
     mutations: {
         authUser(state, authData) {
             state.user = authData;
-            // axios.defaults.headers.common['Authorization'] = 'Bearer ' + state.user.token;
+            if (!authData) {
+                state.user = { _id: null, email: null, name: null, token: null }
+            }
         },
         // not async, dont really need to add logout to mutations
         // but might need to, in the future
         logoutUser(state) {
             state.user = { _id: null, email: null, name: null, token: null };
+        },
+        newGame(state, selectedGame) {
+            state.game = selectedGame;
+        },
+        showGameCreationOptions(state) {
+            state.game.status = 'waiting';
+            console.log('Showing Game Creation Options!!');
+        },
+        hideGameCreationOptions(state) {
+            state.game.status = 'off';
+            console.log('Hiding Game Creation Options!!');
         }
     }
 });

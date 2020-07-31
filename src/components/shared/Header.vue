@@ -22,6 +22,20 @@
               active-class="active"
             >Register</router-link>
           </li>
+          <li v-if="loggedInUser" class="dropdown">
+            <button class="nav-link">Dropdown</button>
+            <ul>
+              <li>
+                <router-link class="nav-link" to="/profile">Profile</router-link>
+              </li>
+              <li>
+                <router-link class="nav-link" to="/account-settings">Settings</router-link>
+              </li>
+              <li>
+                <a class="nav-link" @click="logout">Logout</a>
+              </li>
+            </ul>
+          </li>
           <li v-if="loggedInUser">
             <a class="nav-link" @click="logout">Logout</a>
           </li>
@@ -57,5 +71,34 @@ h1 {
 }
 .home-link {
   text-decoration: none;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown button {
+  background: none;
+}
+
+.dropdown ul {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+  position: absolute;
+  margin-top: 10px;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  list-style: none;
+}
+.dropdown li {
+  width: 100%;
+  height: 100%;
+}
+.dropdown li:hover {
+  background: rgb(231, 231, 231);
 }
 </style>
