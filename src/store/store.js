@@ -7,8 +7,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         user: { _id: null, email: null, name: null, token: null },
-        game: { status: 'off', gameType: null }
-        // game status can be 'on', 'off', 'waiting'
+        game: { _id: null, status: 'off', gameType: null }
+        // game status can be 'on', 'off', 'created-now-waiting', 'not-created-waiting'
     },
     actions: {
         register(userSignUpData) {
@@ -27,27 +27,18 @@ export const store = new Vuex.Store({
             axios
                 .post("/user/login", authData)
                 .then((res) => {
-                    commit('authUser', { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token });
-                    localStorage.setItem('callbreak-app-user', JSON.stringify({ _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token }));
+                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token };
+                    commit('authUser', authData);
+                    localStorage.setItem('callbreak-app-user', JSON.stringify(authData));
                 })
                 .catch((err) => {
-                    console.log("error");
-                    console.log(err);
+                    console.log("Error has occured");
+                    console.log(err.message);
                 });
-        },
-        logout({ commit }) {
-            console.log('Logging Out');
-            localStorage.removeItem('callbreak-app-user');
-            commit('logoutUser');
         },
         autoLogin({ commit }) {
             commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')));
         },
-        // requestResetPassword({ commit }, email) {
-        //     axios.get('/request-password-reset', { email: email })
-        //         .then(res => console.log(res.data))
-        //         .catch(err => console.log(err));
-        // }
         createGameInstance({ commit }, selectedGame) {
             if (selectedGame === 'Callbreak') {
                 axios.get("game/callbreak/new", {
@@ -56,20 +47,42 @@ export const store = new Vuex.Store({
                     }
                 })
                     .then(res => {
-                        console.log(res);
-                        commit('newGame', selectedGame);
+                        console.log(res.data);
+                        commit('instantiateNewGame', res.data);
                     })
+                    .catch((err) => {
+                        console.log("Error has occured");
+                        console.log(err.message);
+                    });
             }
+        },
+        cancelGameCreation({ commit }) {
+            axios.delete('game/callbreak/new', {
+                data: {
+                    gameId: JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+                },
+                headers: {
+                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.log('An error has occured');
+                    console.log(err.message);
+                });
+            commit("hideGameCreationOptions");
         }
     },
     // getters and mutations do not run async code
     // async tasks should be done by Actions first 
     getters: {
-        user(state) {
+        userData(state) {
             return state.user;
         },
-        status(state) {
-            return state.game.status;
+        gameData(state) {
+            return state.game;
         }
     },
     mutations: {
@@ -79,21 +92,25 @@ export const store = new Vuex.Store({
                 state.user = { _id: null, email: null, name: null, token: null }
             }
         },
-        // not async, dont really need to add logout to mutations
-        // but might need to, in the future
         logoutUser(state) {
+            localStorage.removeItem('callbreak-app-user');
             state.user = { _id: null, email: null, name: null, token: null };
         },
-        newGame(state, selectedGame) {
-            state.game = selectedGame;
+        instantiateNewGame(state, gameCreationData) {
+            state.game.gameType = gameCreationData.gameType;
+            state.game._id = gameCreationData.gameId;
+            state.game.status = 'created-now-waiting';
+            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         showGameCreationOptions(state) {
-            state.game.status = 'waiting';
+            state.game.status = 'not-created-waiting';
             console.log('Showing Game Creation Options!!');
+            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         hideGameCreationOptions(state) {
             state.game.status = 'off';
             console.log('Hiding Game Creation Options!!');
+            localStorage.removeItem('callbreak-app-game');
         }
     }
 });

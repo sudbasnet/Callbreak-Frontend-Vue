@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="loggedInUser" style="font-size: 25px; padding: 10px;">Welcome {{ loggedInUser }}</h1>
+    <h1 v-if="userName" style="font-size: 25px; padding: 10px;">Welcome {{ userName }}</h1>
     <button v-if="gameStatus === 'off'" type="button" @click="onCreateGame()">Create Game</button>
 
     <app-initialize-game v-if="gameStatus != 'off'"></app-initialize-game>
@@ -20,11 +20,14 @@ export default {
     },
   },
   computed: {
-    loggedInUser() {
-      return this.$store.getters.user.name;
+    userName() {
+      return this.$store.getters.userData.name;
     },
     gameStatus() {
-      return this.$store.getters.status;
+      return this.$store.getters.gameData.status;
+    },
+    gameData() {
+      return this.$store.getters.gameData;
     },
   },
 };

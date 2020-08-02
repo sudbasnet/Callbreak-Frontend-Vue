@@ -49,7 +49,7 @@
 export default {
   computed: {
     loggedInUser() {
-      return this.$store.getters.user.name;
+      return this.$store.getters.userData.name;
     },
   },
   methods: {

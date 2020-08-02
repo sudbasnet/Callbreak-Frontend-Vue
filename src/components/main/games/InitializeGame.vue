@@ -5,7 +5,16 @@
         <option v-for="game in games" :key="game">{{ game }}</option>
       </select>
     </form>
-    <button type="button" @click="onCreateGame()">Create</button>
+    <div v-if="this.$store.getters.gameData.status === 'created-now-waiting'">
+      <p>Your Game-ID is {{ this.$store.getters.gameData.gameId }}, Please share it with friends to allow them to join.</p>
+      <p>Or you can just play with bots.</p>
+      <button>Play With Bots</button>
+    </div>
+    <button
+      v-if="this.$store.getters.gameData.status !== 'created-now-waiting'"
+      type="button"
+      @click="onCreateGame()"
+    >Create</button>
     <button type="button" @click="onCancelGameCreation()">Cancel</button>
   </div>
 </template>
@@ -20,15 +29,11 @@ export default {
   },
   methods: {
     onCancelGameCreation() {
-      this.$store.commit("hideGameCreationOptions");
+      this.$store.dispatch("cancelGameCreation");
     },
     onCreateGame() {
       if (this.selectedGame) {
-        const res = this.$store.dispatch(
-          "createGameInstance",
-          this.selectedGame
-        );
-        console.log(res);
+        this.$store.dispatch("createGameInstance", this.selectedGame);
       }
       return;
     },
