@@ -11,11 +11,11 @@ export const store = new Vuex.Store({
         // game status can be 'on', 'off', 'created-now-waiting', 'not-created-waiting'
     },
     actions: {
-        register(userSignUpData) {
+        register({ commit }, userSignUpData) {
             axios
                 .put("/user/register", userSignUpData)
                 .then((res) => {
-                    console.log(res.data);
+                    commit('registrationComplete', res.data);
                 })
                 .catch((err) => {
                     console.log("error");
@@ -91,6 +91,9 @@ export const store = new Vuex.Store({
             if (!authData) {
                 state.user = { _id: null, email: null, name: null, token: null }
             }
+        },
+        registrationComplete(state, response) {
+            console.log(response);
         },
         logoutUser(state) {
             localStorage.removeItem('callbreak-app-user');
