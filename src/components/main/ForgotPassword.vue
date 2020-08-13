@@ -12,9 +12,7 @@
 <script>
 export default {
   data() {
-    return {
-      email: null,
-    };
+    return { email: null };
   },
   methods: {
     requestResetPassword() {

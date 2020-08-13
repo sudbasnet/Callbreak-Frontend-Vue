@@ -17,7 +17,7 @@
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" name="confirmPassword" v-model="registrationInfo.confirmPassword" />
       </div>
-      <button @click.prevent="register()">Register</button>
+      <button @click.prevent="register">Register</button>
     </form>
   </div>
 </template>
@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     register() {
-      console.log(this.registrationInfo);
       this.$store.dispatch("register", this.registrationInfo);
     },
   },

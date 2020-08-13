@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
             axios
                 .put("/user/register", userSignUpData)
                 .then((res) => {
-                    commit('registrationComplete', res.data);
+                    commit('dummyMutation', res.data);
                 })
                 .catch((err) => {
                     console.log("error");
@@ -73,6 +73,16 @@ export const store = new Vuex.Store({
                     console.log(err.message);
                 });
             commit("hideGameCreationOptions");
+        },
+        requestResetPassword({ commit }, userEmail) {
+            axios.get('user/request-reset-password/' + userEmail)
+                .then(res => {
+                    commit('dummyMutation', res.data);
+                })
+                .catch(err => {
+                    console.log('Error has occured');
+                    console.log(err);
+                });
         }
     },
     // getters and mutations do not run async code
@@ -91,9 +101,6 @@ export const store = new Vuex.Store({
             if (!authData) {
                 state.user = { _id: null, email: null, name: null, token: null }
             }
-        },
-        registrationComplete(state, response) {
-            console.log(response);
         },
         logoutUser(state) {
             localStorage.removeItem('callbreak-app-user');
@@ -114,6 +121,10 @@ export const store = new Vuex.Store({
             state.game.status = 'off';
             console.log('Hiding Game Creation Options!!');
             localStorage.removeItem('callbreak-app-game');
+        },
+        dummyMutation(state, responseData) {
+            console.log('dummy mutation called.');
+            console.log(responseData.message);
         }
     }
 });

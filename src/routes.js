@@ -15,6 +15,12 @@ const Login = resolve => {
     });
 };
 
+const ForgotPassword = resolve => {
+    require.ensure(['./components/main/ForgotPassword.vue'], () => {
+        resolve(require('./components/main/ForgotPassword.vue'));
+    });
+};
+
 const Register = resolve => {
     require.ensure(['./components/main/Register.vue'], () => {
         resolve(require('./components/main/Register.vue'));
@@ -45,6 +51,10 @@ export const routes = [
     {
         path: '/register',
         component: Register
+    },
+    {
+        path: '/forgot-password',
+        component: ForgotPassword
     },
     {
         path: '/account-settings',

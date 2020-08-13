@@ -10,7 +10,7 @@
         <input type="password" name="password" v-model="loginInfo.password" />
       </div>
       <button type="submit" @click.prevent="login">Login</button>
-      <a href="#">Forgot Password</a>
+      <router-link class="nav-link" to="/forgot-password">Forgot Password</router-link>
     </form>
   </div>
 </template>
