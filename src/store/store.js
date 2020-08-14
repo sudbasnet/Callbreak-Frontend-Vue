@@ -39,6 +39,16 @@ export const store = new Vuex.Store({
         autoLogin({ commit }) {
             commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')));
         },
+        updatePassword({ commit }, updatedPwData) {
+            axios.put("/user/update-password", updatedPwData)
+                .then(res => {
+                    commit('dummyMutation', res.data);
+                })
+                .catch(err => {
+                    console.log("Error has occured");
+                    console.log(err.message);
+                });
+        },
         createGameInstance({ commit }, selectedGame) {
             if (selectedGame === 'Callbreak') {
                 axios.get("game/callbreak/new", {
@@ -115,6 +125,11 @@ export const store = new Vuex.Store({
         showGameCreationOptions(state) {
             state.game.status = 'not-created-waiting';
             console.log('Showing Game Creation Options!!');
+            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
+        },
+        showGameJoinOptions(state) {
+            state.game.status = 'not-created-waiting';
+            console.log('Showing Game Join Options!!');
             localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         hideGameCreationOptions(state) {
