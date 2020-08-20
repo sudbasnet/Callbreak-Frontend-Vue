@@ -1,18 +1,17 @@
 <template>
   <div class="game-window">
     <form>
-      <input type="text" />
+      <div class="join-game-form-group">
+        <label for="gameId">Game-ID:</label>
+        <input type="text" name="gameId" v-model="gameId" />
+      </div>
     </form>
-    <div v-if="this.$store.getters.gameData.status === 'created-now-waiting'">
-      <p>Your Game-ID is {{ this.$store.getters.gameData.gameId }}, Please share it with friends to allow them to join.</p>
-      <p>Or you can just play with bots.</p>
-      <button>Play With Bots</button>
-    </div>
+
     <button
       v-if="this.$store.getters.gameData.status !== 'created-now-waiting'"
       type="button"
-      @click="onCreateGame()"
-    >Create</button>
+      @click="onJoinGame()"
+    >Join</button>
     <button type="button" @click="onCancelGameCreation()">Cancel</button>
   </div>
 </template>
@@ -21,15 +20,14 @@
 export default {
   data() {
     return {
-      games: ["Callbreak", "Other Stupid Games"],
-      selectedGame: "",
+      gameId: null,
     };
   },
   methods: {
     onCancelGameCreation() {
       this.$store.dispatch("cancelGameCreation");
     },
-    onCreateGame() {
+    onJoinGame() {
       if (this.selectedGame) {
         this.$store.dispatch("createGameInstance", this.selectedGame);
       }

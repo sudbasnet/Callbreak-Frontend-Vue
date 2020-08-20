@@ -23,7 +23,7 @@
             >Register</router-link>
           </li>
           <li v-if="loggedInUser" class="dropdown">
-            <button class="nav-link">Dropdown</button>
+            <a class="nav-link">{{loggedInUser}}▼</a>
             <ul>
               <li>
                 <router-link class="nav-link" to="/profile">Profile</router-link>
@@ -79,26 +79,38 @@ h1 {
 
 .dropdown button {
   background: none;
+  cursor: pointer;
+  border: none;
 }
 
 .dropdown ul {
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
+  /* background: rgba(255, 255, 255, 0.5); */
+  /* border-radius: 5px; */
   position: absolute;
   margin-top: 10px;
-  width: 100px;
-  height: 100px;
+  /* width: 200px; */
+  /* height: 100px; */
+  min-width: 150px;
+  height: 2em;
   display: flex;
   justify-content: space-around;
   align-items: center;
   flex-direction: column;
   list-style: none;
+  z-index: 1;
+  display: none;
 }
+
+.dropdown:hover ul {
+  display: block;
+  border: none;
+}
+
 .dropdown li {
   width: 100%;
   height: 100%;
 }
 .dropdown li:hover {
-  background: rgb(231, 231, 231);
+  background: rgba(255, 255, 255, 0.5);
 }
 </style>

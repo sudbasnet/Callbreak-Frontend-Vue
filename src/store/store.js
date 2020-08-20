@@ -67,6 +67,7 @@ export const store = new Vuex.Store({
             }
         },
         cancelGameCreation({ commit }) {
+            commit("hideGameCreationOptions");
             axios.delete('game/callbreak/new', {
                 data: {
                     gameId: JSON.parse(localStorage.getItem('callbreak-app-game'))._id
@@ -82,7 +83,6 @@ export const store = new Vuex.Store({
                     console.log('An error has occured');
                     console.log(err.message);
                 });
-            commit("hideGameCreationOptions");
         },
         requestResetPassword({ commit }, userEmail) {
             axios.get('user/request-reset-password/' + userEmail)
@@ -92,6 +92,21 @@ export const store = new Vuex.Store({
                 .catch(err => {
                     console.log('Error has occured');
                     console.log(err);
+                });
+        },
+        joinGame({ commit }, gameId) {
+            axios.get("game/callbreak/" + gameId + "/join", {
+                headers: {
+                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                    commit('instantiateNewGame', res.data);
+                })
+                .catch((err) => {
+                    console.log("Error has occured");
+                    console.log(err.message);
                 });
         }
     },
@@ -128,9 +143,9 @@ export const store = new Vuex.Store({
             localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         showGameJoinOptions(state) {
-            state.game.status = 'not-created-waiting';
+            state.game.status = 'joining';
             console.log('Showing Game Join Options!!');
-            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
+            // localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         hideGameCreationOptions(state) {
             state.game.status = 'off';
