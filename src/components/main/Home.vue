@@ -10,13 +10,13 @@
 </template>
 
 <script>
-import InitializeGame from "../main/games/InitializeGame.vue";
-import JoinGame from "../main/games/JoinGame.vue";
+import Initialize from "../main/game/Initialize.vue";
+import Join from "../main/game/Join.vue";
 
 export default {
   components: {
-    "app-initialize-game": InitializeGame,
-    "app-join-game": JoinGame,
+    "app-initialize-game": Initialize,
+    "app-join-game": Join,
   },
   methods: {
     onCreateGame() {
