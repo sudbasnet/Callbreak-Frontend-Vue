@@ -17,7 +17,9 @@
         <label for="confirmPassword">Confirm Password</label>
         <input type="password" name="confirmPassword" v-model="registrationInfo.confirmPassword" />
       </div>
-      <button @click.prevent="register">Register</button>
+      <div class="user-action-div">
+        <button class="user-action-btn" @click.prevent="register">Register</button>
+      </div>
     </form>
   </div>
 </template>
@@ -43,4 +45,26 @@ export default {
 </script>
 
 <style scoped>
+input {
+  border: 2px solid #4b4a4a;
+  width: 300px;
+  font-size: 1.25em;
+  font-family: inherit;
+  height: 1.5em;
+}
+
+input:focus {
+  border: 2px solid #000000;
+}
+
+button {
+  border: none;
+  font-family: inherit;
+  background-color: transparent;
+  font-size: 2em;
+}
+
+label {
+  padding-bottom: 0.5em;
+}
 </style>

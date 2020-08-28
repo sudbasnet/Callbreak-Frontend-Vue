@@ -50,7 +50,7 @@ export const store = new Vuex.Store({
                 });
         },
         createGameInstance({ commit }, selectedGame) {
-            if (selectedGame === 'Callbreak') {
+            if (selectedGame === 'callbreak') {
                 axios.get("game/callbreak/new", {
                     headers: {
                         'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
@@ -67,7 +67,6 @@ export const store = new Vuex.Store({
             }
         },
         cancelGameCreation({ commit }) {
-            commit("hideGameCreationOptions");
             axios.delete('game/callbreak/new', {
                 data: {
                     gameId: JSON.parse(localStorage.getItem('callbreak-app-game'))._id
@@ -83,6 +82,7 @@ export const store = new Vuex.Store({
                     console.log('An error has occured');
                     console.log(err.message);
                 });
+            commit("hideGameCreationOptions");
         },
         requestResetPassword({ commit }, userEmail) {
             axios.get('user/request-reset-password/' + userEmail)

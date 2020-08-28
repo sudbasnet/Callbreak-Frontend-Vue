@@ -10,7 +10,7 @@
 
 body{
     font-family: 'munro';
-    background-color: #E8E8E8;
+    background-color: #ffffff;
 }
 
 #app{
@@ -113,3 +113,19 @@ a.disabled {
   .login-form-group, .register-form-group {
       display: grid;
   }
+
+
+  .user-action-div, .center-child-component {
+    display: grid;
+    justify-items: center;
+  }
+  
+  .user-action-btn {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    background-color: transparent;
+    font-size: 2em;
+  }
+
+  

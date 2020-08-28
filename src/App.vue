@@ -1,21 +1,21 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <main class="main">
-      <router-view></router-view>
-    </main>
+    <app-main></app-main>
     <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import Header from "./components/shared/Header.vue";
-import Footer from "./components/shared/Footer.vue";
+import Header from "./components/shared/Header";
+import Footer from "./components/shared/Footer";
+import Main from "./components/main/Main";
 
 export default {
   name: "App",
   components: {
     "app-header": Header,
+    "app-main": Main,
     "app-footer": Footer,
   },
   created() {
