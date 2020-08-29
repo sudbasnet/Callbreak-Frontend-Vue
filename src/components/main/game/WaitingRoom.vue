@@ -13,10 +13,12 @@
     </div>
 
     <div class="nameboxes">
-      <span class="namebox">MY Name</span>
-      <span class="namebox">Waiting...</span>
-      <span class="namebox">Waiting...</span>
-      <span class="namebox">Waiting...</span>
+      <span
+        class="namebox"
+        v-for="player in playersLookup"
+        :key="player.playerId"
+        :class="{ 'light-text': !player.playerName }"
+      >{{ player.playerName ? player.playerName : 'Waiting ...' }}</span>
     </div>
     <div class="user-action-div start-cancel">
       <button class="user-action-btn" type="button" @click="onStartGame()">Start</button>
@@ -36,6 +38,11 @@ export default {
     },
     onPlayWithBots() {
       this.$store.commit("showGameJoinOptions");
+    },
+  },
+  computed: {
+    playersLookup() {
+      return this.$store.getters.playersLookup;
     },
   },
 };
@@ -59,6 +66,7 @@ export default {
 
 .namebox {
   padding: 1em;
+  font-size: 1.5em;
 }
 
 .start-cancel {
@@ -66,6 +74,10 @@ export default {
 }
 #gameid {
   font-size: 2em;
+}
+
+.light-text {
+  color: #868e96;
 }
 
 button {

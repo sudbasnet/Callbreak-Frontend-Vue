@@ -1,15 +1,18 @@
 <template>
   <div>
-    <div v-if="gameStatus === 'off'" id="welcome">
+    <div v-if="gameStatus === 'inactive'" id="welcome">
       <h1>Welcome to Callbreak</h1>
-      <p>
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-        It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of
-        Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-        software like Aldus PageMaker including versions of Lorem Ipsum.
+
+      <p v-if="! isLoggedIn">
+        You can only play with bots when you are not logged in.
+        Please be aware that you might loose all game progress
+        if you close your page during the game, please log-in
+        for better experience.
+      </p>
+      <p v-if="isLoggedIn">
+        This is a four-player game, if you do not have enough
+        players who want to join your game, you can choose to
+        add bots.
       </p>
 
       <ul>
@@ -20,18 +23,14 @@
           <button class="nav-link" @click="onJoinGame()">Join Game</button>
         </li>
         <li>
-          <button
-            class="nav-link"
-            v-if="gameStatus === 'off'"
-            @click="onPlayWithBots()"
-          >Play With Bots</button>
+          <button class="nav-link" @click="onPlayWithBots()">Play With Bots</button>
         </li>
       </ul>
     </div>
 
-    <app-waiting-room v-if="gameStatus != 'off' && gameStatus != 'joining'"></app-waiting-room>
-
     <app-join-game v-if="gameStatus === 'joining'"></app-join-game>
+
+    <app-waiting-room v-if="gameStatus === 'waiting'"></app-waiting-room>
   </div>
 </template>
 
@@ -46,7 +45,7 @@ export default {
   },
   methods: {
     onCreateGame() {
-      this.$store.dispatch("createGameInstance", "callbreak");
+      this.$store.dispatch("createGameInstance", this.isLoggedIn);
     },
     onJoinGame() {
       this.$store.commit("showGameJoinOptions");
@@ -64,6 +63,9 @@ export default {
     },
     gameData() {
       return this.$store.getters.gameData;
+    },
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
     },
   },
 };
