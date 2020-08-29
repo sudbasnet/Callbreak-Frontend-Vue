@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import clonedeep from 'lodash.clonedeep';
 
 Vue.use(Vuex);
 
@@ -43,9 +44,8 @@ const defaultUserData = {
 
 export const store = new Vuex.Store({
     state: {
-        user: defaultUserData,
-        game: defaultGameData,
-
+        user: clonedeep(defaultUserData),
+        game: clonedeep(defaultGameData)
     },
     /* 
     STATUS
@@ -185,12 +185,14 @@ export const store = new Vuex.Store({
         authUser(state, authData) {
             state.user = authData;
             if (!authData) {
-                state.user = defaultUserData
+                state.user = clonedeep(defaultUserData)
             }
         },
         logoutUser(state) {
+            state.user = clonedeep(defaultUserData);
+            state.game = clonedeep(defaultGameData);
             localStorage.removeItem('callbreak-app-user');
-            state.user = { _id: null, email: null, name: null, token: null };
+            localStorage.removeItem('callbreak-app-game');
         },
         instantiateNewGame(state, game) {
             state.game.status = 'waiting';
@@ -238,8 +240,6 @@ export const store = new Vuex.Store({
             state.game.cards = player.cards;
             state.game.possibleMoves = player.possibleMoves;
 
-            console.log(state.game.playerList[0]);
-
             localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
         // showGameCreationOptions(state) {
@@ -248,10 +248,10 @@ export const store = new Vuex.Store({
         //     localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         // },
         refreshGame(state, gameData) {
-            if (gameData) {
+            if (gameData && state.user._id) {
                 state.game = gameData;
             } else {
-                state.game = defaultGameData
+                state.game = clonedeep(defaultGameData);
             }
         },
         showGameJoinOptions(state) {

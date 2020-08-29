@@ -46,6 +46,8 @@
 </template>
 
 <script>
+// import { NavigationFailureType, isNavigationFailure } from "vue-router";
+
 export default {
   computed: {
     loggedInUser() {
@@ -55,7 +57,12 @@ export default {
   methods: {
     logout() {
       this.$store.commit("logoutUser");
-      this.$router.push("/");
+      this.$router.push("/").catch((failure) => {
+        // if (isNavigationFailure(failure, NavigationFailureType.duplicated)) {
+        // console.log("redirecting to home...");
+        console.log(failure.message);
+        // }
+      });
     },
   },
 };
