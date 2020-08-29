@@ -236,7 +236,6 @@ export const store = new Vuex.Store({
             state.game.gameNumber = global.gameNumber;
             state.game.roundNumber = global.roundNumber;
             state.game.scores = global.scores;
-            // state.game.players = game.players.map(p => p.playerId);
             state.game.cards = player.cards;
             state.game.possibleMoves = player.possibleMoves;
 
@@ -248,7 +247,7 @@ export const store = new Vuex.Store({
         //     localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         // },
         refreshGame(state, gameData) {
-            if (gameData && state.user._id) {
+            if (gameData && state.user._id && gameData.playerList.map(p => p.playerId).includes(state.user._id)) {
                 state.game = gameData;
             } else {
                 state.game = clonedeep(defaultGameData);
