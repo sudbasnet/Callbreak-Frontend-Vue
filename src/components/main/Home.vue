@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <div v-if="gameStatus === 'inactive'" id="welcome">
+    <div v-if="gameStatus === 'inactive'" id="welcome" class="center-child-component">
       <h1>Welcome to Callbreak</h1>
 
       <p v-if="! isLoggedIn">
@@ -16,10 +16,10 @@
       </p>
 
       <ul>
-        <li>
+        <li v-if="isLoggedIn">
           <button class="nav-link" @click="onCreateGame()">Create Game</button>
         </li>
-        <li>
+        <li v-if="isLoggedIn">
           <button class="nav-link" @click="onJoinGame()">Join Game</button>
         </li>
         <li>
