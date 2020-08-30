@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="main">
     <div v-if="gameStatus === 'inactive'" id="welcome">
       <h1>Welcome to Callbreak</h1>
 
@@ -97,5 +97,9 @@ h1 {
   justify-items: center;
   align-items: center;
   max-width: 620px;
+}
+
+#main {
+  margin: 0px 5px;
 }
 </style>
