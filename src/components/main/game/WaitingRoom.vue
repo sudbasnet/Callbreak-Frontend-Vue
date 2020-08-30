@@ -1,15 +1,23 @@
 <template>
   <div id="waiting-room">
-    <div class="center-child-component">
+    <div id="waiting-info" class="center-child-component">
       <p>Your Game-ID is:</p>
-      <p>
+
+      <p style="display: flex; align-items: center;">
         <span id="gameid">{{ this.$store.getters.gameData._id }}</span>
+        <button
+          style="font-size: 1em; margin-left: 10px; border: 2px solid; padding: 0.25em"
+          type="button"
+          @click="doNothing"
+        >COPY</button>
       </p>
-      <p>Please share it with friends to allow them to join your game.</p>
+
+      <p>share your game-Id with friends</p>
       <p>OR</p>
-      <div class="user-action-div">
+      <p>PRESS START, all empty slots will be filled by bots</p>
+      <!-- <div class="user-action-div">
         <button class="nav-link" @click="onPlayWithBots()">Play With Bots</button>
-      </div>
+      </div>-->
     </div>
 
     <div class="nameboxes">
@@ -39,6 +47,16 @@ export default {
     onPlayWithBots() {
       this.$store.commit("showGameJoinOptions");
     },
+    doNothing() {
+      navigator.clipboard
+        .writeText(this.$store.getters.gameData._id)
+        .then(() => {
+          console.log("gameId copied to clipboard");
+        })
+        .catch((err) => {
+          console.log("could not copy gameId, reason: " + err);
+        });
+    },
   },
   computed: {
     playersLookup() {
@@ -55,7 +73,7 @@ export default {
   grid-template-columns: 1fr 1fr;
   border-bottom: 2px solid black;
   border-left: 2px solid black;
-  margin: 25px 5px;
+  margin: 10px 5px 20px 5px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -68,12 +86,11 @@ export default {
     margin: 25px 5px;
   }
 }
-
 .nameboxes > span {
   border-top: 2px solid black;
   border-right: 2px solid black;
   min-width: 250px;
-  max-width: 300px;
+  /* max-width: 300px; */
 }
 
 .namebox {
@@ -84,8 +101,9 @@ export default {
 .start-cancel {
   grid-template-columns: 1fr 1fr;
 }
+
 #gameid {
-  font-size: 2em;
+  font-size: 1.5em;
 }
 
 .light-text {
@@ -98,5 +116,9 @@ button {
   background-color: transparent;
   font-size: 2em;
   cursor: pointer;
+}
+
+#waiting-info > p {
+  padding: 0.5em;
 }
 </style>
