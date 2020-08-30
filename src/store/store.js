@@ -103,7 +103,7 @@ export const store = new Vuex.Store({
                     }
                 })
                     .then(res => {
-                        commit('instantiateNewGame', res.data);
+                        commit('instantiateGame', res.data);
                     })
                     .catch((err) => {
                         console.log("Error has occured");
@@ -129,6 +129,20 @@ export const store = new Vuex.Store({
                 });
             commit("hideGameCreationOptions");
         },
+        start({ commit }, gameId) {
+            axios.get('game/callbreak/' + gameId + '/start', {
+                headers: {
+                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                }
+            })
+                .then(res => {
+                    commit('instantiateGame', res.data);
+                })
+                .catch(err => {
+                    console.log('Error has occured');
+                    console.log(err.message);
+                });
+        },
         requestResetPassword({ commit }, userEmail) {
             axios.get('user/request-reset-password/' + userEmail)
                 .then(res => {
@@ -147,7 +161,7 @@ export const store = new Vuex.Store({
             })
                 .then(res => {
                     console.log(res.data);
-                    commit('instantiateNewGame', res.data);
+                    commit('instantiateGame', res.data);
                 })
                 .catch((err) => {
                     console.log("Error has occured");
@@ -194,8 +208,8 @@ export const store = new Vuex.Store({
             localStorage.removeItem('callbreak-app-user');
             localStorage.removeItem('callbreak-app-game');
         },
-        instantiateNewGame(state, game) {
-            state.game.status = 'waiting';
+        instantiateGame(state, game) {
+            state.game.status = game.status;
             state.game._id = game._id;
             state.game.createdBy = game.createdBy;
 

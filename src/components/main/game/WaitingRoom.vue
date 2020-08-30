@@ -8,7 +8,7 @@
         <button
           style="font-size: 1em; margin-left: 10px; border: 2px solid; padding: 0.25em"
           type="button"
-          @click="doNothing"
+          @click="copyGameId"
         >COPY</button>
       </p>
 
@@ -29,8 +29,8 @@
       >{{ player.playerName ? player.playerName : 'Waiting ...' }}</span>
     </div>
     <div class="user-action-div start-cancel">
-      <button class="user-action-btn" type="button" @click="onStartGame()">Start</button>
-      <button class="user-action-btn" type="button" @click="onCancelGameCreation()">Cancel</button>
+      <button class="user-action-btn" type="button" @click="onStartGame">Start</button>
+      <button class="user-action-btn" type="button" @click="onCancelGameCreation">Cancel</button>
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
     onPlayWithBots() {
       this.$store.commit("showGameJoinOptions");
     },
-    doNothing() {
+    copyGameId() {
       navigator.clipboard
         .writeText(this.$store.getters.gameData._id)
         .then(() => {
@@ -56,6 +56,9 @@ export default {
         .catch((err) => {
           console.log("could not copy gameId, reason: " + err);
         });
+    },
+    onStartGame() {
+      this.$store.dispatch("start", this.$store.getters.gameData._id);
     },
   },
   computed: {
