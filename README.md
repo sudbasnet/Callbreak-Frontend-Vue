@@ -1,4 +1,8 @@
-# frontend-vue
+# Callbreak Frontend with VueJS
+
+## alot of things are in-progress 🙂 will keep updating 
+
+![](./src/assets/cardgame.png)
 
 ## Project setup
 ```
