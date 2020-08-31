@@ -70,15 +70,6 @@ export default {
 </script>
 
 <style scoped>
-.nameboxes {
-  display: grid;
-  grid-template-rows: 1fr 1fr;
-  grid-template-columns: 1fr 1fr;
-  border-bottom: 2px solid black;
-  border-left: 2px solid black;
-  margin: 10px 5px 20px 5px;
-}
-
 @media only screen and (max-width: 600px) {
   .nameboxes {
     display: grid;
@@ -89,11 +80,20 @@ export default {
     margin: 25px 5px;
   }
 }
+
+.nameboxes {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 2px solid black;
+  border-left: 2px solid black;
+  margin: 10px 5px 20px 5px;
+}
+
 .nameboxes > span {
   border-top: 2px solid black;
   border-right: 2px solid black;
   min-width: 250px;
-  /* max-width: 300px; */
 }
 
 .namebox {

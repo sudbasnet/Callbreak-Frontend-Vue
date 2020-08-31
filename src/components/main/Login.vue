@@ -45,6 +45,7 @@ input {
   font-size: 1.25em;
   font-family: inherit;
   height: 1.5em;
+  padding: 0px 5px;
 }
 
 input:focus {

@@ -31,17 +31,21 @@
     <app-join-game v-if="gameStatus === 'joining'"></app-join-game>
 
     <app-waiting-room v-if="gameStatus === 'waiting'"></app-waiting-room>
+
+    <app-play-game v-if="gameStatus === 'active'"></app-play-game>
   </div>
 </template>
 
 <script>
 import WaitingRoom from "../main/game/WaitingRoom.vue";
 import Join from "../main/game/Join.vue";
+import Play from "../main/game/Play";
 
 export default {
   components: {
     "app-waiting-room": WaitingRoom,
     "app-join-game": Join,
+    "app-play-game": Play,
   },
   methods: {
     onCreateGame() {
@@ -101,5 +105,6 @@ h1 {
 
 #main {
   margin: 0px 5px;
+  min-width: 350px;
 }
 </style>

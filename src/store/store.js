@@ -193,6 +193,12 @@ export const store = new Vuex.Store({
                 playerList.push({ playerName: null, ready: false });
             }
             return playerList;
+        },
+        mycards(state) {
+            return state.game.cards;
+        },
+        cardsOnTable(state) {
+            return state.game.cards; // will fix later
         }
     },
     mutations: {
