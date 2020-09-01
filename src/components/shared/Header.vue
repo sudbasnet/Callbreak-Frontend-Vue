@@ -36,9 +36,9 @@
               </li>
             </ul>
           </li>
-          <li v-if="loggedInUser">
+          <!-- <li v-if="loggedInUser">
             <a class="nav-link" @click="logout">Logout</a>
-          </li>
+          </li>-->
         </ul>
       </div>
     </nav>

@@ -5,10 +5,10 @@
       <span>Game {{ gameNumber }}/5</span>
     </div>
     <div id="card-table">
-      <div class="player-top">Card</div>
-      <div class="player-left">Card</div>
+      <div class="player-top empty-card">Card</div>
+      <div class="player-left empty-card">Card</div>
       <div class="on-table">Card Card Card</div>
-      <div class="player-right">Card</div>
+      <div class="player-right empty-card">Card</div>
       <div class="player-me">
         <app-card
           v-for="mycard in mycards"
@@ -77,7 +77,7 @@ export default {
 
 <style scoped>
 #play-screen {
-  min-height: 500px;
+  min-height: 400px;
 }
 
 #card-table {
@@ -85,7 +85,7 @@ export default {
   justify-items: center;
   align-items: center;
   gap: 0.75em;
-  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1.5fr 1fr;
   grid-template-columns: 1fr 3fr 1fr;
   grid-template-areas:
     ".            player-top           ."
@@ -100,17 +100,6 @@ export default {
   border-bottom: 2px solid black;
   border-left: 2px solid black;
   margin: 25px 5px;
-}
-
-@media only screen and (max-width: 600px) {
-  #scoreboards {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr;
-    border-bottom: 2px solid black;
-    border-left: 2px solid black;
-    margin: 25px 5px;
-  }
 }
 
 #scoreboards > div {
@@ -157,6 +146,41 @@ export default {
 
 #head-score {
   padding: 0.25em;
-  border: 2px solid;
+  /* border: 2px solid; */
+}
+
+.empty-card {
+  height: 4em;
+  width: 2.75em;
+  border: 3px solid;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  color: #868e96;
+}
+
+.active-player {
+  color: #000000;
+}
+
+@media only screen and (max-width: 600px) {
+  .scoreboard {
+    padding: 0.25em;
+    font-size: 1em;
+  }
+
+  #head-scoreboard {
+    padding-bottom: 1em;
+    font-size: 1em;
+  }
+
+  #scoreboards {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    margin: 25px 5px;
+  }
 }
 </style>
