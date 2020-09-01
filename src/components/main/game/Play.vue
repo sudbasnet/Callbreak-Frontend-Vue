@@ -1,7 +1,7 @@
 <template>
   <div id="play-screen">
     <div id="head-scoreboard">
-      <div id="head-score">Sameer Basnet I : 15 pts</div>
+      <div id="head-score">{{ playerMe.playerName }} : {{playerMe.currentScore }} pts</div>
       <span>Game {{ gameNumber }}/5</span>
     </div>
     <div id="card-table">
@@ -29,9 +29,9 @@ import Card from "./Card";
 
 export default {
   methods: {
-    limitNames(name, limit){
-      return name.substring(0,limit) ? name.length > limit : name;
-    }
+    limitNames(name, limit) {
+      return name.substring(0, limit) ? name.length > limit : name;
+    },
   },
   computed: {
     mycards() {
@@ -56,14 +56,17 @@ export default {
     currentTurn() {
       return this.$store.getters.currentTurn;
     },
-    cardsOnTable(){
+    cardsOnTable() {
       return this.$store.getters.cardsOnTable;
     },
-    playedRounds(){
+    playedRounds() {
       // drop down on the Round Number
       // shows all hands played this game
       return this.$store.getters.playedRounds;
-    }
+    },
+    playerMe() {
+      return this.$store.getters.playerMe;
+    },
   },
   components: {
     "app-card": Card,

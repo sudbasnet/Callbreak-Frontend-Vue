@@ -30,7 +30,7 @@ const defaultGameData = {
     scores: [
         {
             playerId: null,
-            round: null,
+            gameNumber: null,
             score: null
         }
     ],
@@ -168,22 +168,22 @@ export const store = new Vuex.Store({
                     console.log(err.message);
                 });
         },
-        refreshGame({commit}){
-            if(localStorage.getItem('callbreak-app-user')){
+        refreshGame({ commit }) {
+            if (localStorage.getItem('callbreak-app-user')) {
                 axios.get("game/callbreak/game-data",
-                {
-                    headers: {
-                        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
-                    }
-                })
-                .then(res => {
-                    console.log(res.data);
-                    commit('instantiateGame', res.data);
-                })
-                .catch((err) => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                        }
+                    })
+                    .then(res => {
+                        console.log(res.data);
+                        commit('instantiateGame', res.data);
+                    })
+                    .catch((err) => {
+                        console.log("Error has occured");
+                        console.log(err.message);
+                    });
             }
         }
     },
@@ -232,11 +232,14 @@ export const store = new Vuex.Store({
         currentTurn(state) {
             return state.game.currentTurn;
         },
-        playedRounds(state){
+        playedRounds(state) {
             return state.game.playedRounds;
         },
         playerNames(state) {
             return state.game.playerList.map(p => p.playerName);
+        },
+        playerMe(state) {
+            return state.game.playerList.filter(p => p.playerId === state.user._id)[0];
         }
     },
     mutations: {
