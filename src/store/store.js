@@ -22,6 +22,7 @@ const defaultGameData = {
     ready: false,
     cards: [{ suit: null, value: null }],
     possibleMoves: [{ suit: null, value: null }],
+    playedRounds: [],
     createdBy: null,
     gameNumber: null,
     roundNumber: null,
@@ -83,7 +84,6 @@ export const store = new Vuex.Store({
         },
         autoLogin({ commit }) {
             commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')));
-            commit('refreshGame', JSON.parse(localStorage.getItem('callbreak-app-game')));
         },
         updatePassword({ commit }, updatedPwData) {
             axios.put("/user/update-password", updatedPwData)
@@ -167,6 +167,24 @@ export const store = new Vuex.Store({
                     console.log("Error has occured");
                     console.log(err.message);
                 });
+        },
+        refreshGame({commit}){
+            if(localStorage.getItem('callbreak-app-user')){
+                axios.get("game/callbreak/game-data",
+                {
+                    headers: {
+                        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                    }
+                })
+                .then(res => {
+                    console.log(res.data);
+                    commit('instantiateGame', res.data);
+                })
+                .catch((err) => {
+                    console.log("Error has occured");
+                    console.log(err.message);
+                });
+            }
         }
     },
     // getters and mutations do not run async code
@@ -199,6 +217,26 @@ export const store = new Vuex.Store({
         },
         cardsOnTable(state) {
             return state.game.cards; // will fix later
+        },
+        gameNumber(state) {
+            return state.game.gameNumber;
+        },
+        totalPoints(state) {
+            // array of everyone's points
+            return state.game.scores;
+        },
+        currentScores(state) {
+            // returns score out of bet
+            return state.game.scores;
+        },
+        currentTurn(state) {
+            return state.game.currentTurn;
+        },
+        playedRounds(state){
+            return state.game.playedRounds;
+        },
+        playerNames(state) {
+            return state.game.playerList.map(p => p.playerName);
         }
     },
     mutations: {
@@ -222,9 +260,9 @@ export const store = new Vuex.Store({
             const global = game.global;
             const player = game.player;
 
-            const currentBets = global.bets.filter(b => b.round === global.roundNumber);
-            const currentScores = global.scores.filter(s => s.round === global.roundNumber);
-            const readys = global.ready.filter(s => s.round === global.roundNumber);
+            const currentBets = global.bets.filter(b => b.gameNumber === global.gameNumber);
+            const currentScores = global.scores.filter(s => s.gameNumber === global.gameNumber);
+            const readys = global.ready.filter(s => s.gameNumber === global.gameNumber);
 
             state.game.playerList = [];
             let bet = 0;
@@ -252,6 +290,8 @@ export const store = new Vuex.Store({
 
             state.game.currentTurn = global.currentTurn;
             state.game.nextTurn = global.nextTurn; // why??
+            state.game.playedRounds = global.playedRounds;
+            state.game.cardsOnTable = global.cardsOnTable;
 
             state.game.gameNumber = global.gameNumber;
             state.game.roundNumber = global.roundNumber;

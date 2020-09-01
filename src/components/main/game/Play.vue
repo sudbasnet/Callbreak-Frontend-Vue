@@ -2,7 +2,7 @@
   <div id="play-screen">
     <div id="head-scoreboard">
       <div id="head-score">Sameer Basnet I : 15 pts</div>
-      <span>Round x</span>
+      <span>Game {{ gameNumber }}/5</span>
     </div>
     <div id="card-table">
       <div class="player-top">Card</div>
@@ -19,10 +19,7 @@
       </div>
     </div>
     <div id="scoreboards">
-      <div class="scoreboard">Sameer Basnet I</div>
-      <div class="scoreboard">Sameer Basnet II</div>
-      <div class="scoreboard">Sameer Basnet III</div>
-      <div class="scoreboard">Sameer Basnet IV</div>
+      <div class="scoreboard" v-for="playerName in playerNames" :key="playerName">{{playerName}}</div>
     </div>
   </div>
 </template>
@@ -31,10 +28,42 @@
 import Card from "./Card";
 
 export default {
+  methods: {
+    limitNames(name, limit){
+      return name.substring(0,limit) ? name.length > limit : name;
+    }
+  },
   computed: {
     mycards() {
+      // need to sort this by suits and then values
       return this.$store.getters.mycards;
     },
+    playerNames() {
+      console.log(this.$store.getters.playerNames);
+      return this.$store.getters.playerNames;
+    },
+    gameNumber() {
+      return this.$store.getters.gameNumber;
+    },
+    totalPoints() {
+      // array of everyone's points
+      return this.$store.getters.totalPoints;
+    },
+    currentScores() {
+      // returns score out of bet
+      return this.$store.getters.currentScores;
+    },
+    currentTurn() {
+      return this.$store.getters.currentTurn;
+    },
+    cardsOnTable(){
+      return this.$store.getters.cardsOnTable;
+    },
+    playedRounds(){
+      // drop down on the Round Number
+      // shows all hands played this game
+      return this.$store.getters.playedRounds;
+    }
   },
   components: {
     "app-card": Card,
@@ -108,6 +137,7 @@ export default {
   grid-area: player-me;
   display: flex;
   justify-content: space-between;
+  width: 100%;
 }
 
 .on-table {

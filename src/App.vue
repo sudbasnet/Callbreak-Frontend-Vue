@@ -20,6 +20,7 @@ export default {
   },
   created() {
     this.$store.dispatch("autoLogin");
+    this.$store.dispatch("refreshGame");
   },
 };
 </script>
