@@ -19,7 +19,10 @@
       </div>
     </div>
     <div id="scoreboards">
-      <div class="scoreboard" v-for="playerName in playerNames" :key="playerName">{{playerName}}</div>
+      <div class="scores" v-for="playerName in playerNames" :key="playerName">
+        <span class="scoreboard">{{playerName}}</span>
+        <span class="scorebar">█</span>
+      </div>
     </div>
   </div>
 </template>
@@ -108,8 +111,19 @@ export default {
   min-width: 250px;
 }
 
+.scores {
+  padding: 0.25em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* .scorebars {
+    padding: 0.25em; 
+} */
+
 .scoreboard {
-  padding: 0.25em;
+  /* padding: 0.25em; */
   font-size: 1.25em;
 }
 
@@ -128,8 +142,10 @@ export default {
 .player-me {
   grid-area: player-me;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
 
 .on-table {
@@ -165,7 +181,6 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .scoreboard {
-    padding: 0.25em;
     font-size: 1em;
   }
 

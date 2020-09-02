@@ -31,8 +31,16 @@ export default {
 <style scoped>
 .card {
   display: grid;
+  justify-content: center;
+  align-content: space-between;
   border: 2px solid;
-  padding: 0.25em;
-  max-width: 20px;
+  min-width: 1em;
+  min-height: 2.5em;
+  padding: 0.1em;
+  background-color: ivory;
+}
+
+.card:hover {
+  align-self: flex-start;
 }
 </style>
