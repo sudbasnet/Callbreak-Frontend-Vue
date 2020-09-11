@@ -111,23 +111,22 @@ export const store = new Vuex.Store({
                     console.log(err.message);
                 });
         },
-        createGameInstance({ commit }, isPlayerLoggedIn) {
+        createGameInstance({ commit }) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
 
-            if (isPlayerLoggedIn) {
-                axios.get("game/callbreak/new", {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+            axios.get("game/callbreak/new", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    commit('instantiateGame', res.data);
                 })
-                    .then(res => {
-                        commit('instantiateGame', res.data);
-                    })
-                    .catch((err) => {
-                        console.log("Error has occured");
-                        console.log(err.message);
-                    });
-            }
+                .catch((err) => {
+                    console.log("Error has occured");
+                    console.log(err.message);
+                });
+
         },
         cancelGameCreation({ commit }) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
@@ -211,6 +210,33 @@ export const store = new Vuex.Store({
                         console.log(err.message);
                     });
             }
+        },
+        playWithBots({ commit }) {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
+            axios.get("game/callbreak/new", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(createRes => {
+                    axios.get(`game/callbreak/${createRes.data._id}/start`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    })
+                        .then(res => {
+                            commit('instantiateGame', res.data);
+                        })
+                        .catch(err => {
+                            console.log('Error has occured during game start!');
+                            console.log(err.message);
+                        });
+                })
+                .catch((err) => {
+                    console.log("Error has occured during game creation!");
+                    console.log(err.message);
+                });
         },
         placeBet({ commit }, bet) {
             const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id;
@@ -340,7 +366,9 @@ export const store = new Vuex.Store({
         },
         showGameJoinOptions(state) {
             state.game.status = 'joining';
-            console.log('Showing Game Join Options!!');
+        },
+        hideGamejoinOptions(state) {
+            state.game.status = 'inactive';
         },
         hideGameCreationOptions(state) {
             state.game.status = 'inactive';

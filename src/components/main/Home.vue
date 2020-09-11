@@ -49,24 +49,18 @@ export default {
   },
   methods: {
     onCreateGame() {
-      this.$store.dispatch("createGameInstance", this.isLoggedIn);
+      this.$store.dispatch("createGameInstance");
     },
     onJoinGame() {
       this.$store.commit("showGameJoinOptions");
     },
     onPlayWithBots() {
-      this.$store.commit("showGameJoinOptions");
+      this.$store.dispatch("playWithBots"); // need to fix this
     },
   },
   computed: {
-    userName() {
-      return this.$store.getters.userData.name;
-    },
     gameStatus() {
       return this.$store.getters.gameData.status;
-    },
-    gameData() {
-      return this.$store.getters.gameData;
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;

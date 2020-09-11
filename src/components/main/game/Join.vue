@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     onCancelGameCreation() {
-      this.$store.dispatch("cancelGameCreation");
+      this.$store.commit("hideGamejoinOptions");
     },
     onJoinGame() {
       if (this.selectedGame) {
