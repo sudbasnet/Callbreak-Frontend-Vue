@@ -24,9 +24,9 @@
       <span
         class="namebox"
         v-for="player in playersLookup"
-        :key="player.playerId"
-        :class="{ 'light-text': !player.playerName }"
-      >{{ player.playerName ? player.playerName : 'Waiting ...' }}</span>
+        :key="player.id"
+        :class="{ 'light-text': !player.name }"
+      >{{ player.name ? player.name : 'Waiting ...' }}</span>
     </div>
     <div class="user-action-div start-cancel">
       <button class="user-action-btn" type="button" @click="onStartGame">Start</button>

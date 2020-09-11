@@ -152,7 +152,7 @@ export const store = new Vuex.Store({
         start({ commit }, gameId) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
 
-            axios.get(`game/callbreak/${gameId}'/start`, {
+            axios.get(`game/callbreak/${gameId}/start`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -222,8 +222,7 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    console.log(res.data);
-                    commit('dummyMutation', res.data);
+                    commit('instantiateGame', res.data);
                 })
                 .catch((err) => {
                     console.log("Error has occured");
@@ -249,10 +248,10 @@ export const store = new Vuex.Store({
         playersLookup(state) {
             let playerList = [];
             if (state.game.playerList) {
-                playerList = state.game.playerList;
+                playerList = clonedeep(state.game.playerList);
             }
             while (playerList.length < 4) {
-                playerList.push({ playerName: null });
+                playerList.push({ name: null });
             }
             return playerList;
         },
@@ -275,7 +274,7 @@ export const store = new Vuex.Store({
             return state.game.playerList;
         },
         playerMe(state) {
-            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
             return state.game.playerList[i];
         },
         myBet(state) {
@@ -353,13 +352,15 @@ export const store = new Vuex.Store({
             console.log(responseData.message);
         },
         increaseBet(state) {
-            if (state.game.myBet < 8) {
-                state.game.myBet += 1;
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
+            if (state.game.playerList[i].bet < 8) {
+                state.game.playerList[i].bet += 1;
             }
         },
         decreaseBet(state) {
-            if (state.game.myBet > 1) {
-                state.game.myBet -= 1;
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
+            if (state.game.playerList[i].bet > 1) {
+                state.game.playerList[i].bet -= 1;
             }
         }
 

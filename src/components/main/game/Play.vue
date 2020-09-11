@@ -1,7 +1,7 @@
 <template>
   <div id="play-screen">
     <div id="head-scoreboard">
-      <div id="head-score">{{ playerMe.playerName }} : {{playerMe.currentScore }} pts</div>
+      <div id="head-score">{{ playerMe.name }} : {{playerMe.totalScore }} pts</div>
       <span>Game {{ gameNumber }}/5</span>
     </div>
     <div id="card-table">
@@ -19,32 +19,37 @@
       </div>
     </div>
 
-    <div v-if="!isBetting" id="scoreboard">
+    <!-- <div v-if="!isBetting" id="scoreboard">
       <div class="score" v-for="playerName in playerNames" :key="playerName">
         <span>{{playerName}}</span>
         <span class="scorebar">{{" "}} █ {{" "}}</span>
       </div>
-    </div>
+    </div>-->
 
-    <div v-if="isBetting" id="bettingboard">
-      <div class="bet" v-for="player in this.$store.getters.playerList" :key="player.playerId">
-        <span>{{player.playerName}}</span>
+    <div id="bettingboard">
+      <div class="bet" v-for="player in this.$store.getters.playerList" :key="player.id">
+        <span>{{player.name}}</span>
         <div>
-          <span v-for="i in player.currentBet" :key="i">{{" "}} █ {{" "}}</span>
-          <button
-            v-if="player.playerId === playerMe.playerId"
-            class="bet-control"
-            @click="$store.commit('decreaseBet')"
-          >-</button>
-          <button
-            v-if="player.playerId === playerMe.playerId"
-            class="bet-control"
-            @click="$store.commit('increaseBet')"
-          >+</button>
+          <span v-for="i in player.bet" :key="i">{{" "}} █ {{" "}}</span>
+
+          <span v-if="isBetting">
+            <button
+              v-if="player.id === playerMe.id"
+              class="bet-control"
+              @click="$store.commit('decreaseBet')"
+            >-</button>
+            <button
+              v-if="player.id === playerMe.id"
+              class="bet-control"
+              @click="$store.commit('increaseBet')"
+            >+</button>
+          </span>
         </div>
       </div>
     </div>
-    <button class="user-action-btn" type="button" @click="placeBet">Confirm</button>
+    <div class="user-action-div" v-if="isBetting">
+      <button class="user-action-btn" type="button" @click="placeBet">Confirm Claim</button>
+    </div>
   </div>
 </template>
 
@@ -57,7 +62,7 @@ export default {
       return name.substring(0, limit) ? name.length > limit : name;
     },
     placeBet() {
-      this.$store.dispatch("placeBet", this.$store.getters.playerMe.currentBet);
+      this.$store.dispatch("placeBet", this.$store.getters.playerMe.bet);
     },
   },
   computed: {
@@ -66,7 +71,7 @@ export default {
       return this.$store.getters.mycards;
     },
     playerNames() {
-      return this.$store.getters.playerList.map((p) => p.playerName);
+      return this.$store.getters.playerList.map((p) => p.name);
     },
     gameNumber() {
       return this.$store.getters.gameNumber;
@@ -77,10 +82,10 @@ export default {
     },
     currentScores() {
       // returns score out of bet
-      return this.$store.getters.currentScores;
+      return this.$store.getters.scores;
     },
     currentTurn() {
-      return this.$store.getters.currentTurn;
+      return this.$store.getters.turn;
     },
     cardsOnTable() {
       return this.$store.getters.cardsOnTable;
