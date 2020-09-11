@@ -23,10 +23,10 @@
             >Register</router-link>
           </li>
 
-          <li v-if="loggedInUser" class="dropdown">
-            <a class="nav-link" @click="toggleDropdown">{{loggedInUser}}▼</a>
+          <li v-if="loggedInUser" class="dropdown-container">
+            <a class="nav-link" @click="toggleDropdown">{{loggedInUser}} ▼</a>
 
-            <ul :class="[isDropdown ? 'dropdown-show': 'dropdown-no-show']">
+            <ul class="dropdown-items">
               <li>
                 <router-link class="nav-link" to="/profile">Profile</router-link>
               </li>
@@ -38,9 +38,6 @@
               </li>
             </ul>
           </li>
-          <!-- <li v-if="loggedInUser">
-            <a class="nav-link" @click="logout">Logout</a>
-          </li>-->
         </ul>
       </div>
     </nav>
@@ -94,53 +91,33 @@ h1 {
   text-decoration: none;
 }
 
-.dropdown {
+.dropdown-container {
   position: relative;
 }
 
-.dropdown button {
-  background: none;
-  cursor: pointer;
-  border: none;
-}
-
-.dropdown-no-show {
-  /* border-radius: 5px; */
+.dropdown-container .dropdown-items {
+  visibility: hidden;
   position: absolute;
   margin-top: 10px;
-  /* width: 200px; */
-  /* height: 100px; */
   min-width: 150px;
-  height: 2em;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
   list-style: none;
   z-index: 1;
-  display: none;
 }
 
-.dropdown:hover ul,
-.dropdown-show {
-  position: absolute;
-  margin-top: 10px;
-  min-width: 120px;
-  height: 2em;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  flex-direction: column;
-  list-style: none;
-  z-index: 1;
-  display: block;
+.dropdown-container:hover .dropdown-items {
+  visibility: visible;
 }
 
-.dropdown li {
+.dropdown-items li {
   width: 100%;
-  height: 100%;
+  height: 2em;
   background: rgba(255, 255, 255);
 }
+
 .dropdown li:hover {
   background: rgba(255, 255, 255);
 }

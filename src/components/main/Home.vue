@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="home">
     <div v-if="gameStatus === 'inactive'" id="welcome" class="center-child-component">
       <h1>Welcome to Callbreak</h1>
 
@@ -103,8 +103,10 @@ h1 {
   max-width: 620px;
 }
 
-#main {
+#home {
   margin: 0px 5px;
   min-width: 350px;
+  /* border: 2px solid; */
+  padding: 5px;
 }
 </style>

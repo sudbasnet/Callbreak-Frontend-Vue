@@ -18,12 +18,33 @@
         ></app-card>
       </div>
     </div>
-    <div id="scoreboards">
-      <div class="scores" v-for="playerName in playerNames" :key="playerName">
-        <span class="scoreboard">{{playerName}}</span>
-        <span class="scorebar">█</span>
+
+    <div v-if="!isBetting" id="scoreboard">
+      <div class="score" v-for="playerName in playerNames" :key="playerName">
+        <span>{{playerName}}</span>
+        <span class="scorebar">{{" "}} █ {{" "}}</span>
       </div>
     </div>
+
+    <div v-if="isBetting" id="bettingboard">
+      <div class="bet" v-for="player in this.$store.getters.playerList" :key="player.playerId">
+        <span>{{player.playerName}}</span>
+        <div>
+          <span v-for="i in player.currentBet" :key="i">{{" "}} █ {{" "}}</span>
+          <button
+            v-if="player.playerId === playerMe.playerId"
+            class="bet-control"
+            @click="$store.commit('decreaseBet')"
+          >-</button>
+          <button
+            v-if="player.playerId === playerMe.playerId"
+            class="bet-control"
+            @click="$store.commit('increaseBet')"
+          >+</button>
+        </div>
+      </div>
+    </div>
+    <button class="user-action-btn" type="button" @click="placeBet">Confirm</button>
   </div>
 </template>
 
@@ -35,6 +56,9 @@ export default {
     limitNames(name, limit) {
       return name.substring(0, limit) ? name.length > limit : name;
     },
+    placeBet() {
+      this.$store.dispatch("placeBet", this.$store.getters.playerMe.currentBet);
+    },
   },
   computed: {
     mycards() {
@@ -42,8 +66,7 @@ export default {
       return this.$store.getters.mycards;
     },
     playerNames() {
-      console.log(this.$store.getters.playerNames);
-      return this.$store.getters.playerNames;
+      return this.$store.getters.playerList.map((p) => p.playerName);
     },
     gameNumber() {
       return this.$store.getters.gameNumber;
@@ -69,6 +92,9 @@ export default {
     },
     playerMe() {
       return this.$store.getters.playerMe;
+    },
+    isBetting() {
+      return this.$store.getters.isBetting;
     },
   },
   components: {
@@ -96,7 +122,8 @@ export default {
     "player-me    player-me   player-me ";
 }
 
-#scoreboards {
+#scoreboards,
+#bettingboard {
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
@@ -105,13 +132,15 @@ export default {
   margin: 25px 5px;
 }
 
-#scoreboards > div {
+#scoreboards > div,
+#bettingboard > div {
   border-top: 2px solid black;
   border-right: 2px solid black;
   min-width: 250px;
 }
 
-.scores {
+.scores,
+.bet {
   padding: 0.25em 1em;
   display: flex;
   align-items: center;
@@ -189,7 +218,8 @@ export default {
     font-size: 1em;
   }
 
-  #scoreboards {
+  #scoreboards,
+  #bettingboard {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr 1fr;
     grid-template-columns: 1fr;
@@ -197,5 +227,13 @@ export default {
     border-left: 2px solid black;
     margin: 25px 5px;
   }
+}
+
+.bet-control {
+  border: none;
+  background-color: none;
+  padding: 0.5em;
+  font-family: inherit;
+  margin: 2px;
 }
 </style>

@@ -8,6 +8,7 @@ Vue.use(Vuex);
 const defaultGameData = {
     _id: null,
     status: 'inactive',
+
     playerList: [
         {
             playerId: null,
@@ -17,6 +18,16 @@ const defaultGameData = {
             ready: null
         }
     ],
+
+    myTurn: false,
+    myBetPlaced: false,
+    myBet: 1,
+    myCurrentScore: 0,
+    myTotalScore: 0,
+    myCards: [],
+    myValidMoves: [],
+    myReady: false,
+
     currentTurn: null,
     nextTurn: null,
     ready: false,
@@ -96,10 +107,12 @@ export const store = new Vuex.Store({
                 });
         },
         createGameInstance({ commit }, isPlayerLoggedIn) {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
             if (isPlayerLoggedIn) {
                 axios.get("game/callbreak/new", {
                     headers: {
-                        'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                        'Authorization': `Bearer ${token}`
                     }
                 })
                     .then(res => {
@@ -112,12 +125,14 @@ export const store = new Vuex.Store({
             }
         },
         cancelGameCreation({ commit }) {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
             axios.delete('game/callbreak/new', {
                 data: {
                     gameId: JSON.parse(localStorage.getItem('callbreak-app-game'))._id
                 },
                 headers: {
-                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(res => {
@@ -130,9 +145,11 @@ export const store = new Vuex.Store({
             commit("hideGameCreationOptions");
         },
         start({ commit }, gameId) {
-            axios.get('game/callbreak/' + gameId + '/start', {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
+            axios.get(`game/callbreak/${gameId}'/start`, {
                 headers: {
-                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(res => {
@@ -154,9 +171,11 @@ export const store = new Vuex.Store({
                 });
         },
         joinGame({ commit }, gameId) {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
             axios.get("game/callbreak/" + gameId + "/join", {
                 headers: {
-                    'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                    'Authorization': `Bearer ${token}`
                 }
             })
                 .then(res => {
@@ -169,11 +188,13 @@ export const store = new Vuex.Store({
                 });
         },
         refreshGame({ commit }) {
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
             if (localStorage.getItem('callbreak-app-user')) {
                 axios.get("game/callbreak/game-data",
                     {
                         headers: {
-                            'Authorization': `Bearer ${JSON.parse(localStorage.getItem('callbreak-app-user')).token}`
+                            'Authorization': `Bearer ${token}`
                         }
                     })
                     .then(res => {
@@ -185,6 +206,24 @@ export const store = new Vuex.Store({
                         console.log(err.message);
                     });
             }
+        },
+        placeBet({ commit }, bet) {
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+
+            axios.post(`game/callbreak/${gameId}/bet`, { bet: bet }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    console.log(res.data);
+                    commit('dummyMutation', res.data);
+                })
+                .catch((err) => {
+                    console.log("Error has occured");
+                    console.log(err.message);
+                });
         }
     },
     // getters and mutations do not run async code
@@ -235,11 +274,23 @@ export const store = new Vuex.Store({
         playedRounds(state) {
             return state.game.playedRounds;
         },
-        playerNames(state) {
-            return state.game.playerList.map(p => p.playerName);
+        playerList(state) {
+            return state.game.playerList;
         },
         playerMe(state) {
-            return state.game.playerList.filter(p => p.playerId === state.user._id)[0];
+            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            return state.game.playerList[i];
+        },
+        myBet(state) {
+            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            return state.game.playerList[i].currentBet;
+        },
+        isBetting(state) {
+            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            if (!state.game.playerList[i].ready) {
+                return true;
+            }
+            return false;
         }
     },
     mutations: {
@@ -328,6 +379,21 @@ export const store = new Vuex.Store({
         dummyMutation(state, responseData) {
             console.log('dummy mutation called.');
             console.log(responseData.message);
+        },
+        increaseBet(state) {
+            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            if (state.game.playerList[i].currentBet < 8) {
+                state.game.playerList[i].currentBet += 1;
+            }
+            console.log(`bet: ${state.game.playerList[i].currentBet}`);
+        },
+        decreaseBet(state) {
+            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
+            if (state.game.playerList[i].currentBet > 1) {
+                state.game.playerList[i].currentBet -= 1;
+            }
+            console.log(`bet: ${state.game.playerList[i].currentBet}`);
         }
+
     }
 });
