@@ -6,45 +6,50 @@ import clonedeep from 'lodash.clonedeep';
 Vue.use(Vuex);
 
 const defaultGameData = {
+    // unique identifier sent by the backend
     _id: null,
+    // is the game 'active' or 'inactive'
     status: 'inactive',
+    // host
+    createdBy: null,
 
-    playerList: [
-        {
-            playerId: null,
-            playerName: null,
-            currentBet: null,
-            currentScore: null,
-            ready: null
-        }
-    ],
+    // which game? (1 ... 5)
+    gameNumber: null,
+    // which round? (1 ... 13)
+    roundNumber: null,
+
+    cardsOnTable: [],
 
     myTurn: false,
     myBetPlaced: false,
     myBet: 1,
-    myCurrentScore: 0,
+    myScore: 0,
     myTotalScore: 0,
     myCards: [],
     myValidMoves: [],
-    myReady: false,
 
-    currentTurn: null,
-    nextTurn: null,
-    ready: false,
-    cards: [{ suit: null, value: null }],
-    possibleMoves: [{ suit: null, value: null }],
-    playedRounds: [],
-    createdBy: null,
-    gameNumber: null,
-    roundNumber: null,
-    turnNumber: null,
+    // which playerId's turn
+    turn: null,
+
+    // cards played so far in this game
+    playedRounds: [[]],
+
+    // all the scores in all the 5 games
     scores: [
-        {
-            playerId: null,
-            gameNumber: null,
-            score: null
-        }
+        { playerId: null, gameNumber: null, score: null }
     ],
+
+    // list of all players info for the current game
+    playerList: [
+        {
+            id: null,
+            name: null,
+            bet: null,
+            score: null,
+            totalScore: null,
+            betPlaced: false
+        }
+    ]
 };
 
 const defaultUserData = {
@@ -247,29 +252,21 @@ export const store = new Vuex.Store({
                 playerList = state.game.playerList;
             }
             while (playerList.length < 4) {
-                playerList.push({ playerName: null, ready: false });
+                playerList.push({ playerName: null });
             }
             return playerList;
         },
         mycards(state) {
-            return state.game.cards;
+            return state.game.myCards;
         },
         cardsOnTable(state) {
-            return state.game.cards; // will fix later
+            return state.game.cardsOnTable; // will fix later
         },
         gameNumber(state) {
             return state.game.gameNumber;
         },
-        totalPoints(state) {
-            // array of everyone's points
-            return state.game.scores;
-        },
-        currentScores(state) {
-            // returns score out of bet
-            return state.game.scores;
-        },
         currentTurn(state) {
-            return state.game.currentTurn;
+            return state.game.turn;
         },
         playedRounds(state) {
             return state.game.playedRounds;
@@ -282,15 +279,10 @@ export const store = new Vuex.Store({
             return state.game.playerList[i];
         },
         myBet(state) {
-            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
-            return state.game.playerList[i].currentBet;
+            return state.game.myBet;
         },
         isBetting(state) {
-            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
-            if (!state.game.playerList[i].ready) {
-                return true;
-            }
-            return false;
+            return !state.game.myBetPlaced
         }
     },
     mutations: {
@@ -307,61 +299,41 @@ export const store = new Vuex.Store({
             localStorage.removeItem('callbreak-app-game');
         },
         instantiateGame(state, game) {
+            const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id;
+            const global = game.global;
+            const player = game.player;
+            const myindex = global.playerList.findIndex(p => p.id === userId);
+            const myData = global.playerList[myindex];
+
             state.game.status = game.status;
             state.game._id = game._id;
             state.game.createdBy = game.createdBy;
 
-            const global = game.global;
-            const player = game.player;
-
-            const currentBets = global.bets.filter(b => b.gameNumber === global.gameNumber);
-            const currentScores = global.scores.filter(s => s.gameNumber === global.gameNumber);
-            const readys = global.ready.filter(s => s.gameNumber === global.gameNumber);
-
-            state.game.playerList = [];
-            let bet = 0;
-            let score = 0;
-            let ready = false;
-
-            global.playerList.forEach(playerDetail => {
-                bet = currentBets.filter(s => s.playerId === playerDetail.playerId)[0];
-                bet = bet ? bet.bet : 0;
-
-                score = currentScores.filter(s => s.playerId === playerDetail.playerId)[0];
-                score = score ? score.score : 0;
-
-                ready = readys.filter(r => r.playerId === playerDetail.playerId)[0];
-                ready = ready ? ready.ready : false;
-
-                state.game.playerList.push({
-                    playerId: playerDetail.playerId,
-                    playerName: playerDetail.playerName,
-                    currentBet: bet,
-                    currentScore: score,
-                    ready: ready
-                });
-            });
-
-            state.game.currentTurn = global.currentTurn;
-            state.game.nextTurn = global.nextTurn; // why??
-            state.game.playedRounds = global.playedRounds;
-            state.game.cardsOnTable = global.cardsOnTable;
-
             state.game.gameNumber = global.gameNumber;
             state.game.roundNumber = global.roundNumber;
+
+            state.game.cardsOnTable = global.cardsOnTable;
+
+            state.game.myTurn = global.currentTurn === userId ? true : false;
+            state.game.myBetPlaced = myData.betPlaced;
+            state.game.myBet = myData.bet;
+            state.game.myScore = myData.score;
+            state.game.myTotalScore = myData.totalScore;
+            state.game.myCards = player.cards;
+            state.game.myValidMoves = player.possibleMoves;
+
+            state.game.turn = global.currentTurn;
+
+            state.game.playedRounds = global.playedRounds;
+
             state.game.scores = global.scores;
-            state.game.cards = player.cards;
-            state.game.possibleMoves = player.possibleMoves;
+
+            state.game.playerList = global.playerList;
 
             localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
         },
-        // showGameCreationOptions(state) {
-        //     state.game.status = 'not-created-waiting';
-        //     console.log('Showing Game Creation Options!!');
-        //     localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
-        // },
         refreshGame(state, gameData) {
-            if (gameData && state.user._id && gameData.playerList.map(p => p.playerId).includes(state.user._id)) {
+            if (gameData && state.user._id && gameData.playerList.map(p => p.id).includes(state.user._id)) {
                 state.game = gameData;
             } else {
                 state.game = clonedeep(defaultGameData);
@@ -381,18 +353,14 @@ export const store = new Vuex.Store({
             console.log(responseData.message);
         },
         increaseBet(state) {
-            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
-            if (state.game.playerList[i].currentBet < 8) {
-                state.game.playerList[i].currentBet += 1;
+            if (state.game.myBet < 8) {
+                state.game.myBet += 1;
             }
-            console.log(`bet: ${state.game.playerList[i].currentBet}`);
         },
         decreaseBet(state) {
-            const i = state.game.playerList.findIndex(p => p.playerId === state.user._id);
-            if (state.game.playerList[i].currentBet > 1) {
-                state.game.playerList[i].currentBet -= 1;
+            if (state.game.myBet > 1) {
+                state.game.myBet -= 1;
             }
-            console.log(`bet: ${state.game.playerList[i].currentBet}`);
         }
 
     }
