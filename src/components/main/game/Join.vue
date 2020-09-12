@@ -26,10 +26,7 @@ export default {
       this.$store.commit("hideGamejoinOptions");
     },
     onJoinGame() {
-      if (this.selectedGame) {
-        this.$store.dispatch("createGameInstance", this.selectedGame);
-      }
-      return;
+      this.$store.dispatch("joinGame", this.gameId);
     },
   },
 };

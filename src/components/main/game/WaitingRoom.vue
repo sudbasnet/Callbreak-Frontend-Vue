@@ -29,7 +29,7 @@
       >{{ player.name ? player.name : 'Waiting ...' }}</span>
     </div>
     <div class="user-action-div start-cancel">
-      <button class="user-action-btn" type="button" @click="onStartGame">Start</button>
+      <button class="user-action-btn" type="button" v-if="myCreation" @click="onStartGame">Start</button>
       <button class="user-action-btn" type="button" @click="onCancelGameCreation">Cancel</button>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     onCancelGameCreation() {
-      this.$store.dispatch("cancelGameCreation");
+      this.$store.dispatch("cancelGame");
     },
     onPlayWithBots() {
       this.$store.commit("showGameJoinOptions");
@@ -64,6 +64,9 @@ export default {
   computed: {
     playersLookup() {
       return this.$store.getters.playersLookup;
+    },
+    myCreation() {
+      return this.$store.getters.createdBy === this.$store.getters.userData._id;
     },
   },
 };

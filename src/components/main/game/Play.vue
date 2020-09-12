@@ -4,11 +4,23 @@
       <div id="head-score">{{ playerMe.name }} : {{playerMe.totalScore }} pts</div>
       <span>Game {{ gameNumber }}/5</span>
     </div>
+
     <div id="card-table">
-      <div class="player-top empty-card">Card</div>
-      <div class="player-left empty-card">Card</div>
-      <div class="on-table">Card Card Card</div>
-      <div class="player-right empty-card">Card</div>
+      <!-- player 2 -->
+      <app-player class="player-top" :players="playerList" :indexDelta="2"></app-player>
+      <!-- player 3 -->
+      <app-player class="player-left" :players="playerList" :indexDelta="3"></app-player>
+      <div class="on-table">
+        <app-card
+          v-for="card in cardsOnTable"
+          :key="card._id"
+          :cardvalue="card.value"
+          :cardsuit="card.suit"
+        ></app-card>
+      </div>
+      <!-- player 1 -->
+      <app-player class="player-right" :players="playerList" :indexDelta="1"></app-player>
+      <!-- player 0 -->
       <div class="player-me">
         <app-card
           v-for="mycard in mycards"
@@ -19,20 +31,13 @@
       </div>
     </div>
 
-    <!-- <div v-if="!isBetting" id="scoreboard">
-      <div class="score" v-for="playerName in playerNames" :key="playerName">
-        <span>{{playerName}}</span>
-        <span class="scorebar">{{" "}} █ {{" "}}</span>
-      </div>
-    </div>-->
-
     <div id="bettingboard">
-      <div class="bet" v-for="player in this.$store.getters.playerList" :key="player.id">
+      <div class="bet" v-for="player in playerList" :key="player.id">
         <span>{{player.name}}</span>
         <div>
           <span v-for="i in player.bet" :key="i">{{" "}} █ {{" "}}</span>
 
-          <span v-if="isBetting">
+          <span v-if="isBetting && myTurn">
             <button
               v-if="player.id === playerMe.id"
               class="bet-control"
@@ -47,14 +52,18 @@
         </div>
       </div>
     </div>
-    <div class="user-action-div" v-if="isBetting">
+    <div class="user-action-div" v-if="isBetting && myTurn">
       <button class="user-action-btn" type="button" @click="placeBet">Confirm Claim</button>
+    </div>
+    <div class="user-action-div">
+      <button class="user-action-btn" type="button" @click="onCancelGameCreation">Cancel</button>
     </div>
   </div>
 </template>
 
 <script>
 import Card from "./Card";
+import Player from "./Player";
 
 export default {
   methods: {
@@ -64,11 +73,25 @@ export default {
     placeBet() {
       this.$store.dispatch("placeBet", this.$store.getters.playerMe.bet);
     },
+    onCancelGameCreation() {
+      this.$store.dispatch("cancelGame");
+    },
   },
   computed: {
+    user() {
+      return this.$store.getters.userData;
+    },
     mycards() {
       // need to sort this by suits and then values
       return this.$store.getters.mycards;
+    },
+    playerList() {
+      return this.$store.getters.playerList;
+    },
+    myIndexInPlayerList() {
+      return this.$store.getters.playerList.findIndex(
+        (p) => p.id === this.$store.getters.userData._id
+      );
     },
     playerNames() {
       return this.$store.getters.playerList.map((p) => p.name);
@@ -85,7 +108,12 @@ export default {
       return this.$store.getters.scores;
     },
     currentTurn() {
-      return this.$store.getters.turn;
+      return this.$store.getters.currentTurn;
+    },
+    myTurn() {
+      return (
+        this.$store.getters.currentTurn === this.$store.getters.userData._id
+      );
     },
     cardsOnTable() {
       return this.$store.getters.cardsOnTable;
@@ -104,8 +132,9 @@ export default {
   },
   components: {
     "app-card": Card,
+    "app-player": Player,
   },
-  props: ["cardvalue", "cardsuit"],
+  props: ["cardvalue", "cardsuit", "players", "indexDelta"],
 };
 </script>
 
@@ -152,10 +181,6 @@ export default {
   justify-content: space-between;
 }
 
-/* .scorebars {
-    padding: 0.25em; 
-} */
-
 .scoreboard {
   /* padding: 0.25em; */
   font-size: 1.25em;
@@ -197,20 +222,6 @@ export default {
 #head-score {
   padding: 0.25em;
   /* border: 2px solid; */
-}
-
-.empty-card {
-  height: 4em;
-  width: 2.75em;
-  border: 3px solid;
-  display: grid;
-  justify-content: center;
-  align-content: center;
-  color: #868e96;
-}
-
-.active-player {
-  color: #000000;
 }
 
 @media only screen and (max-width: 600px) {

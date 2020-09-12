@@ -128,7 +128,7 @@ export const store = new Vuex.Store({
                 });
 
         },
-        cancelGameCreation({ commit }) {
+        cancelGame({ commit }) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
 
             axios.delete('game/callbreak/new', {
@@ -146,7 +146,7 @@ export const store = new Vuex.Store({
                     console.log('An error has occured');
                     console.log(err.message);
                 });
-            commit("hideGameCreationOptions");
+            commit("resetGame");
         },
         start({ commit }, gameId) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
@@ -308,7 +308,11 @@ export const store = new Vuex.Store({
         },
         isBetting(state) {
             return !state.game.myBetPlaced
+        },
+        createdBy(state) {
+            return state.game.createdBy;
         }
+
     },
     mutations: {
         authUser(state, authData) {
@@ -317,6 +321,10 @@ export const store = new Vuex.Store({
                 state.user = clonedeep(defaultUserData)
             }
         },
+        resetGame(state) {
+            state.game = clonedeep(defaultGameData);
+            localStorage.removeItem('callbreak-app-game');
+        },
         logoutUser(state) {
             state.user = clonedeep(defaultUserData);
             state.game = clonedeep(defaultGameData);
@@ -324,6 +332,8 @@ export const store = new Vuex.Store({
             localStorage.removeItem('callbreak-app-game');
         },
         instantiateGame(state, game) {
+            console.log("game data fetched");
+            console.log(game);
             const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id;
             const global = game.global;
             const player = game.player;
