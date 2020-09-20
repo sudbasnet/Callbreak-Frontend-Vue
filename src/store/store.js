@@ -44,6 +44,7 @@ const defaultGameData = {
         {
             id: null,
             name: null,
+            bot: null,
             bet: null,
             score: null,
             totalScore: null,
@@ -128,7 +129,6 @@ export const store = new Vuex.Store({
                     console.log("Error has occured")
                     console.log(err.message)
                 })
-
         },
         cancelGame({ commit }) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
@@ -210,10 +210,8 @@ export const store = new Vuex.Store({
                     })
                     .catch((err) => {
                         commit('resetGame')
-                        if (!err.response.status === 404) {
-                            console.log("Error has occured")
-                            console.log(err.message)
-                        }
+                        console.log("Error has occured")
+                        console.log(err.message)
                     })
             }
         },
@@ -261,6 +259,27 @@ export const store = new Vuex.Store({
                     console.log("Error has occured")
                     console.log(err.message)
                 })
+        },
+        requestBetForBot({ commit }, botId) {
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
+
+            console.log('botbet requested')
+
+            axios.get(`game/callbreak/${gameId}/bot-bet/${botId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
+                })
+                .catch((err) => {
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
+
         }
     },
     // getters and mutations do not run async code
@@ -377,6 +396,17 @@ export const store = new Vuex.Store({
             state.game.playerList = global.playerList
 
             localStorage.setItem('callbreak-app-game', JSON.stringify(state.game))
+
+            if (game.status == 'active') {
+                const i = state.game.playerList.findIndex(x => x.id === state.game.turn)
+                const currentTurnPlayer = state.game.playerList[i]
+                const userIsHost = state.user._id === state.game.createdBy
+                if (userIsHost && currentTurnPlayer.bot) {
+                    if (!currentTurnPlayer.betPlaced) {
+                        this.dispatch('requestBetForBot', state.game.turn)
+                    }
+                }
+            }
         },
         refreshGame(state, gameData) {
             if (gameData && state.user._id && gameData.playerList.map(p => p.id).includes(state.user._id)) {

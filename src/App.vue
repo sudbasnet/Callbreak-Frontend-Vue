@@ -30,7 +30,7 @@ export default {
       console.log("UPDATE_GAME message received");
       this.$store.dispatch("refreshGame");
     },
-    GAME_EXISTED() {
+    GAME_EXITED() {
       console.log("You have exited the game");
       this.$store.dispatch("refreshGame");
     },
