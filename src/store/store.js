@@ -59,6 +59,7 @@ const defaultUserData = {
     token: null
 };
 
+
 export const store = new Vuex.Store({
     state: {
         user: clonedeep(defaultUserData),
@@ -120,6 +121,7 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
+                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) });
                     commit('instantiateGame', res.data);
                 })
                 .catch((err) => {
@@ -130,16 +132,18 @@ export const store = new Vuex.Store({
         },
         cancelGame({ commit }) {
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
 
             axios.delete('game/callbreak/new', {
                 data: {
-                    gameId: JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+                    gameId: gameId
                 },
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
                 .then(res => {
+                    this._vm.$socket.emit('EXIT_GAME', { room: String(gameId) });
                     console.log(res.data);
                 })
                 .catch(err => {
@@ -157,6 +161,7 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) });
                     commit('instantiateGame', res.data);
                 })
                 .catch(err => {
@@ -183,7 +188,7 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    console.log(res.data);
+                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) });
                     commit('instantiateGame', res.data);
                 })
                 .catch((err) => {
@@ -248,6 +253,7 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) });
                     commit('instantiateGame', res.data);
                 })
                 .catch((err) => {
@@ -315,6 +321,10 @@ export const store = new Vuex.Store({
 
     },
     mutations: {
+        SOCKET_CONNECT(state) {
+            state.socketsConnected = true;
+            console.log('Websockets connected - Client side');
+        },
         authUser(state, authData) {
             state.user = authData;
             if (!authData) {

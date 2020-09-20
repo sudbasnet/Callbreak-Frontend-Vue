@@ -22,6 +22,19 @@ export default {
     this.$store.dispatch("autoLogin");
     this.$store.dispatch("refreshGame");
   },
+  sockets: {
+    connect() {
+      console.log("socket connected");
+    },
+    GAME_UPDATED() {
+      console.log("UPDATE_GAME message received");
+      this.$store.dispatch("refreshGame");
+    },
+    GAME_EXISTED() {
+      console.log("You have exited the game");
+      this.$store.dispatch("refreshGame");
+    },
+  },
 };
 </script>
 

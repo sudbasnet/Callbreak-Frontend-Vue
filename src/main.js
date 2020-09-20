@@ -23,16 +23,14 @@ Vue.use(new VueSocketIO({
   connection: axios.defaults.baseURL,
   vuex: {
     store,
-    actionPrefix: 'SOCKET_',
-    mutationPrefix: 'SOCKET_'
-  },
-  options: { path: "" }
+    actionPrefix: 'SOCKET_'
+  }
 }))
 
 const router = new VueRouter({ routes: routes, mode: 'history' });
 
 new Vue({
-  router: router,
-  store: store,
+  router,
+  store,
   render: h => h(App),
 }).$mount('#app');
