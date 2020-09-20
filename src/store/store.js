@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import axios from 'axios';
-import clonedeep from 'lodash.clonedeep';
+import Vue from 'vue'
+import Vuex from 'vuex'
+import axios from 'axios'
+import clonedeep from 'lodash.clonedeep'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 const defaultGameData = {
     // unique identifier sent by the backend
@@ -50,14 +50,14 @@ const defaultGameData = {
             betPlaced: false
         }
     ]
-};
+}
 
 const defaultUserData = {
     _id: null,
     email: null,
     name: null,
     token: null
-};
+}
 
 
 export const store = new Vuex.Store({
@@ -78,42 +78,42 @@ export const store = new Vuex.Store({
             axios
                 .put("/user/register", userSignUpData)
                 .then((res) => {
-                    commit('dummyMutation', res.data);
+                    commit('dummyMutation', res.data)
                 })
                 .catch((err) => {
-                    console.log("error");
-                    console.log(err);
-                });
+                    console.log("error")
+                    console.log(err)
+                })
         },
         // its coming out of context.commit
         login({ commit }, authData) {
             axios
                 .post("/user/login", authData)
                 .then((res) => {
-                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token };
-                    commit('authUser', authData);
-                    localStorage.setItem('callbreak-app-user', JSON.stringify(authData));
+                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token }
+                    commit('authUser', authData)
+                    localStorage.setItem('callbreak-app-user', JSON.stringify(authData))
                 })
                 .catch((err) => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
         },
         autoLogin({ commit }) {
-            commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')));
+            commit('authUser', JSON.parse(localStorage.getItem('callbreak-app-user')))
         },
         updatePassword({ commit }, updatedPwData) {
             axios.put("/user/update-password", updatedPwData)
                 .then(res => {
-                    commit('dummyMutation', res.data);
+                    commit('dummyMutation', res.data)
                 })
                 .catch(err => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
         },
         createGameInstance({ commit }) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
             axios.get("game/callbreak/new", {
                 headers: {
@@ -121,17 +121,17 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) });
-                    commit('instantiateGame', res.data);
+                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
                 })
                 .catch((err) => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
 
         },
         cancelGame({ commit }) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
             const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
 
             axios.delete('game/callbreak/new', {
@@ -143,17 +143,17 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    this._vm.$socket.emit('EXIT_GAME', { room: String(gameId) });
-                    console.log(res.data);
+                    this._vm.$socket.emit('EXIT_GAME', { room: String(gameId) })
+                    console.log(res.data)
                 })
                 .catch(err => {
-                    console.log('An error has occured');
-                    console.log(err.message);
-                });
-            commit("resetGame");
+                    console.log('An error has occured')
+                    console.log(err.message)
+                })
+            commit("resetGame")
         },
         start({ commit }, gameId) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
             axios.get(`game/callbreak/${gameId}/start`, {
                 headers: {
@@ -161,26 +161,26 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) });
-                    commit('instantiateGame', res.data);
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
                 })
                 .catch(err => {
-                    console.log('Error has occured');
-                    console.log(err.message);
-                });
+                    console.log('Error has occured')
+                    console.log(err.message)
+                })
         },
         requestResetPassword({ commit }, userEmail) {
             axios.get('user/request-reset-password/' + userEmail)
                 .then(res => {
-                    commit('dummyMutation', res.data);
+                    commit('dummyMutation', res.data)
                 })
                 .catch(err => {
-                    console.log('Error has occured');
-                    console.log(err);
-                });
+                    console.log('Error has occured')
+                    console.log(err)
+                })
         },
         joinGame({ commit }, gameId) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
             axios.get("game/callbreak/" + gameId + "/join", {
                 headers: {
@@ -188,18 +188,17 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) });
-                    commit('instantiateGame', res.data);
+                    this._vm.$socket.emit('JOIN_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
                 })
                 .catch((err) => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
         },
         refreshGame({ commit }) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
-
             if (localStorage.getItem('callbreak-app-user')) {
+                const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
                 axios.get("game/callbreak/game-data",
                     {
                         headers: {
@@ -207,17 +206,19 @@ export const store = new Vuex.Store({
                         }
                     })
                     .then(res => {
-                        console.log(res.data);
-                        commit('instantiateGame', res.data);
+                        commit('instantiateGame', res.data)
                     })
                     .catch((err) => {
-                        console.log("Error has occured");
-                        console.log(err.message);
-                    });
+                        commit('resetGame')
+                        if (!err.response.status === 404) {
+                            console.log("Error has occured")
+                            console.log(err.message)
+                        }
+                    })
             }
         },
         playWithBots({ commit }) {
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
             axios.get("game/callbreak/new", {
                 headers: {
@@ -231,21 +232,21 @@ export const store = new Vuex.Store({
                         }
                     })
                         .then(res => {
-                            commit('instantiateGame', res.data);
+                            commit('instantiateGame', res.data)
                         })
                         .catch(err => {
-                            console.log('Error has occured during game start!');
-                            console.log(err.message);
-                        });
+                            console.log('Error has occured during game start!')
+                            console.log(err.message)
+                        })
                 })
                 .catch((err) => {
-                    console.log("Error has occured during game creation!");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured during game creation!")
+                    console.log(err.message)
+                })
         },
         placeBet({ commit }, bet) {
-            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id;
-            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token;
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
             axios.post(`game/callbreak/${gameId}/bet`, { bet: bet }, {
                 headers: {
@@ -253,164 +254,164 @@ export const store = new Vuex.Store({
                 }
             })
                 .then(res => {
-                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) });
-                    commit('instantiateGame', res.data);
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
                 })
                 .catch((err) => {
-                    console.log("Error has occured");
-                    console.log(err.message);
-                });
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
         }
     },
     // getters and mutations do not run async code
     // async tasks should be done by Actions first 
     getters: {
         userData(state) {
-            return state.user;
+            return state.user
         },
         gameData(state) {
-            return state.game;
+            return state.game
         },
         isLoggedIn(state) {
             if (state.user._id) {
-                return true;
+                return true
             }
-            return false;
+            return false
         },
         playersLookup(state) {
-            let playerList = [];
+            let playerList = []
             if (state.game.playerList) {
-                playerList = clonedeep(state.game.playerList);
+                playerList = clonedeep(state.game.playerList)
             }
             while (playerList.length < 4) {
-                playerList.push({ name: null });
+                playerList.push({ name: null })
             }
-            return playerList;
+            return playerList
         },
         mycards(state) {
-            return state.game.myCards;
+            return state.game.myCards
         },
         cardsOnTable(state) {
-            return state.game.cardsOnTable; // will fix later
+            return state.game.cardsOnTable // will fix later
         },
         gameNumber(state) {
-            return state.game.gameNumber;
+            return state.game.gameNumber
         },
         currentTurn(state) {
-            return state.game.turn;
+            return state.game.turn
         },
         playedRounds(state) {
-            return state.game.playedRounds;
+            return state.game.playedRounds
         },
         playerList(state) {
-            return state.game.playerList;
+            return state.game.playerList
         },
         playerMe(state) {
-            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
-            return state.game.playerList[i];
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id)
+            return state.game.playerList[i]
         },
         myBet(state) {
-            return state.game.myBet;
+            return state.game.myBet
         },
         isBetting(state) {
             return !state.game.myBetPlaced
         },
         createdBy(state) {
-            return state.game.createdBy;
+            return state.game.createdBy
         }
 
     },
     mutations: {
         SOCKET_CONNECT(state) {
-            state.socketsConnected = true;
-            console.log('Websockets connected - Client side');
+            state.socketsConnected = true
+            console.log('Websockets connected - Client side')
         },
         authUser(state, authData) {
-            state.user = authData;
+            state.user = authData
             if (!authData) {
                 state.user = clonedeep(defaultUserData)
             }
         },
         resetGame(state) {
-            state.game = clonedeep(defaultGameData);
-            localStorage.removeItem('callbreak-app-game');
+            state.game = clonedeep(defaultGameData)
+            localStorage.removeItem('callbreak-app-game')
         },
         logoutUser(state) {
-            state.user = clonedeep(defaultUserData);
-            state.game = clonedeep(defaultGameData);
-            localStorage.removeItem('callbreak-app-user');
-            localStorage.removeItem('callbreak-app-game');
+            state.user = clonedeep(defaultUserData)
+            state.game = clonedeep(defaultGameData)
+            localStorage.removeItem('callbreak-app-user')
+            localStorage.removeItem('callbreak-app-game')
         },
         instantiateGame(state, game) {
-            console.log("game data fetched");
-            console.log(game);
-            const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id;
-            const global = game.global;
-            const player = game.player;
-            const myindex = global.playerList.findIndex(p => p.id === userId);
-            const myData = global.playerList[myindex];
+            console.log("game data fetched")
+            console.log(game)
+            const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id
+            const global = game.global
+            const player = game.player
+            const myindex = global.playerList.findIndex(p => p.id === userId)
+            const myData = global.playerList[myindex]
 
-            state.game.status = game.status;
-            state.game._id = game._id;
-            state.game.createdBy = game.createdBy;
+            state.game.status = game.status
+            state.game._id = game._id
+            state.game.createdBy = game.createdBy
 
-            state.game.gameNumber = global.gameNumber;
-            state.game.roundNumber = global.roundNumber;
+            state.game.gameNumber = global.gameNumber
+            state.game.roundNumber = global.roundNumber
 
-            state.game.cardsOnTable = global.cardsOnTable;
+            state.game.cardsOnTable = global.cardsOnTable
 
-            state.game.myTurn = global.currentTurn === userId ? true : false;
-            state.game.myBetPlaced = myData.betPlaced;
-            state.game.myBet = myData.bet;
-            state.game.myScore = myData.score;
-            state.game.myTotalScore = myData.totalScore;
-            state.game.myCards = player.cards;
-            state.game.myValidMoves = player.possibleMoves;
+            state.game.myTurn = global.currentTurn === userId ? true : false
+            state.game.myBetPlaced = myData.betPlaced
+            state.game.myBet = myData.bet
+            state.game.myScore = myData.score
+            state.game.myTotalScore = myData.totalScore
+            state.game.myCards = player.cards
+            state.game.myValidMoves = player.possibleMoves
 
-            state.game.turn = global.currentTurn;
+            state.game.turn = global.currentTurn
 
-            state.game.playedRounds = global.playedRounds;
+            state.game.playedRounds = global.playedRounds
 
-            state.game.scores = global.scores;
+            state.game.scores = global.scores
 
-            state.game.playerList = global.playerList;
+            state.game.playerList = global.playerList
 
-            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game));
+            localStorage.setItem('callbreak-app-game', JSON.stringify(state.game))
         },
         refreshGame(state, gameData) {
             if (gameData && state.user._id && gameData.playerList.map(p => p.id).includes(state.user._id)) {
-                state.game = gameData;
+                state.game = gameData
             } else {
-                state.game = clonedeep(defaultGameData);
+                state.game = clonedeep(defaultGameData)
             }
         },
         showGameJoinOptions(state) {
-            state.game.status = 'joining';
+            state.game.status = 'joining'
         },
         hideGamejoinOptions(state) {
-            state.game.status = 'inactive';
+            state.game.status = 'inactive'
         },
         hideGameCreationOptions(state) {
-            state.game.status = 'inactive';
-            console.log('Hiding Game Creation Options!!');
-            localStorage.removeItem('callbreak-app-game');
+            state.game.status = 'inactive'
+            console.log('Hiding Game Creation Options!!')
+            localStorage.removeItem('callbreak-app-game')
         },
         dummyMutation(state, responseData) {
-            console.log('dummy mutation called.');
-            console.log(responseData.message);
+            console.log('dummy mutation called.')
+            console.log(responseData.message)
         },
         increaseBet(state) {
-            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id)
             if (state.game.playerList[i].bet < 8) {
-                state.game.playerList[i].bet += 1;
+                state.game.playerList[i].bet += 1
             }
         },
         decreaseBet(state) {
-            const i = state.game.playerList.findIndex(p => p.id === state.user._id);
+            const i = state.game.playerList.findIndex(p => p.id === state.user._id)
             if (state.game.playerList[i].bet > 1) {
-                state.game.playerList[i].bet -= 1;
+                state.game.playerList[i].bet -= 1
             }
         }
 
     }
-});
+})
