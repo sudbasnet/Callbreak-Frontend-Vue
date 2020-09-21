@@ -13,9 +13,9 @@ const defaultGameData = {
     // host
     createdBy: null,
 
-    // which game? (1 ... 5)
-    gameNumber: null,
-    // which round? (1 ... 13)
+    // which hand? (1 ... 13)
+    handNumber: null,
+    // which round? (1 ... 5)
     roundNumber: null,
 
     cardsOnTable: [],
@@ -32,7 +32,7 @@ const defaultGameData = {
     turn: null,
 
     // cards played so far in this game
-    playedRounds: [[]],
+    playedHands: [[]],
 
     // all the scores in all the 5 games
     scores: [
@@ -374,7 +374,7 @@ export const store = new Vuex.Store({
             state.game._id = game._id
             state.game.createdBy = game.createdBy
 
-            state.game.gameNumber = global.gameNumber
+            state.game.handNumber = global.handNumber
             state.game.roundNumber = global.roundNumber
 
             state.game.cardsOnTable = global.cardsOnTable
@@ -389,7 +389,7 @@ export const store = new Vuex.Store({
 
             state.game.turn = global.currentTurn
 
-            state.game.playedRounds = global.playedRounds
+            state.game.playedHands = global.playedHands
 
             state.game.scores = global.scores
 
