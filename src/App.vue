@@ -18,10 +18,6 @@ export default {
     "app-main": Main,
     "app-footer": Footer,
   },
-  created() {
-    this.$store.dispatch("autoLogin");
-    this.$store.dispatch("refreshGame");
-  },
   sockets: {
     connect() {
       console.log("socket connected");
