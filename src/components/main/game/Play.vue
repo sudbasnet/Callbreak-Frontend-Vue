@@ -2,7 +2,7 @@
   <div id="play-screen">
     <div id="head-scoreboard">
       <div id="head-score">{{ playerMe.name }} : {{playerMe.totalScore }} pts</div>
-      <span>Game {{ gameNumber }}/5</span>
+      <span>Round {{ roundNumber }}/5</span>
     </div>
 
     <div id="card-table">
@@ -22,12 +22,15 @@
       <app-player class="player-right" :players="playerList" :indexDelta="1"></app-player>
       <!-- player 0 -->
       <div class="player-me">
-        <app-card
+        <button
           v-for="mycard in mycards"
           :key="mycard._id"
-          :cardvalue="mycard.value"
-          :cardsuit="mycard.suit"
-        ></app-card>
+          @click="playHand({suit: mycard.suit, value: mycard.value})"
+          :disabled="!game.myBetPlaced || !game.myTurn"
+          class="card-button"
+        >
+          <app-card :cardvalue="mycard.value" :cardsuit="mycard.suit"></app-card>
+        </button>
       </div>
     </div>
 
@@ -76,10 +79,16 @@ export default {
     onCancelGameCreation() {
       this.$store.dispatch("cancelGame");
     },
+    playHand(card) {
+      this.$store.dispatch("playHand", card);
+    },
   },
   computed: {
     user() {
       return this.$store.getters.userData;
+    },
+    game() {
+      return this.$store.getters.gameData;
     },
     mycards() {
       // need to sort this by suits and then values
@@ -96,8 +105,8 @@ export default {
     playerNames() {
       return this.$store.getters.playerList.map((p) => p.name);
     },
-    gameNumber() {
-      return this.$store.getters.gameNumber;
+    roundNumber() {
+      return this.$store.getters.roundNumber;
     },
     totalPoints() {
       // array of everyone's points
@@ -209,6 +218,12 @@ export default {
 
 .on-table {
   grid-area: on-table;
+  display: flex;
+  align-content: space-between;
+}
+
+.card-button {
+  border: none;
 }
 
 #head-scoreboard {

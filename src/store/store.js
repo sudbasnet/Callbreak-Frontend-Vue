@@ -264,8 +264,6 @@ export const store = new Vuex.Store({
             const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
             const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
-            console.log('botbet requested')
-
             axios.get(`game/callbreak/${gameId}/bot-bet/${botId}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -279,7 +277,47 @@ export const store = new Vuex.Store({
                     console.log("Error has occured")
                     console.log(err.message)
                 })
+        },
+        requestMoveForBot({ commit }, botId) {
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
 
+            axios.get(`game/callbreak/${gameId}/bot-move/${botId}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
+                })
+                .catch((err) => {
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
+        },
+        playHand({ commit }, card) {
+            const gameId = JSON.parse(localStorage.getItem('callbreak-app-game'))._id
+            const token = JSON.parse(localStorage.getItem('callbreak-app-user')).token
+            const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id
+
+            axios.post(`game/callbreak/${gameId}/play-hand`, {
+                suit: card.suit,
+                value: card.value,
+                playedBy: userId
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+                .then(res => {
+                    this._vm.$socket.emit('UPDATE_GAME', { room: String(res.data._id) })
+                    commit('instantiateGame', res.data)
+                })
+                .catch((err) => {
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
         }
     },
     // getters and mutations do not run async code
@@ -313,8 +351,8 @@ export const store = new Vuex.Store({
         cardsOnTable(state) {
             return state.game.cardsOnTable // will fix later
         },
-        gameNumber(state) {
-            return state.game.gameNumber
+        roundNumber(state) {
+            return state.game.roundNumber
         },
         currentTurn(state) {
             return state.game.turn
@@ -362,8 +400,6 @@ export const store = new Vuex.Store({
             localStorage.removeItem('callbreak-app-game')
         },
         instantiateGame(state, game) {
-            console.log("game data fetched")
-            console.log(game)
             const userId = JSON.parse(localStorage.getItem('callbreak-app-user'))._id
             const global = game.global
             const player = game.player
@@ -404,6 +440,8 @@ export const store = new Vuex.Store({
                 if (userIsHost && currentTurnPlayer.bot) {
                     if (!currentTurnPlayer.betPlaced) {
                         this.dispatch('requestBetForBot', state.game.turn)
+                    } else {
+                        this.dispatch('requestMoveForBot', state.game.turn)
                     }
                 }
             }
