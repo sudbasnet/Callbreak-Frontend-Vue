@@ -1,18 +1,20 @@
 <template>
   <div id="home">
-    <div v-if="gameStatus === 'inactive'" id="welcome" class="center-child-component">
+    <div
+      v-if="gameStatus === 'inactive'"
+      id="welcome"
+      class="center-child-component"
+    >
       <h1>Welcome to Callbreak</h1>
 
-      <p v-if="! isLoggedIn">
-        You can only play with bots when you are not logged in.
-        Please be aware that you might loose all game progress
-        if you close your page during the game, please log-in
-        for better experience.
+      <p v-if="!isLoggedIn">
+        You can only play with bots when you are not logged in. Please be aware
+        that you might loose all game progress if you close your page during the
+        game, please log-in for better experience.
       </p>
       <p v-if="isLoggedIn">
-        This is a four-player game, if you do not have enough
-        players who want to join your game, you can choose to
-        add bots.
+        This is a four-player game, if you do not have enough players who want
+        to join your game, you can choose to add bots.
       </p>
 
       <ul>
@@ -23,7 +25,9 @@
           <button class="nav-link" @click="onJoinGame()">Join Game</button>
         </li>
         <li>
-          <button class="nav-link" @click="onPlayWithBots()">Play With Bots</button>
+          <button class="nav-link" @click="onPlayWithBots()">
+            Play With Bots
+          </button>
         </li>
       </ul>
     </div>
@@ -39,13 +43,13 @@
 <script>
 import WaitingRoom from "../main/game/WaitingRoom.vue";
 import Join from "../main/game/Join.vue";
-import Play from "../main/game/Play";
+import PlayRoom from "../main/game/PlayRoom/PlayRoom";
 
 export default {
   components: {
     "app-waiting-room": WaitingRoom,
     "app-join-game": Join,
-    "app-play-game": Play,
+    "app-play-game": PlayRoom,
   },
   methods: {
     onCreateGame() {
@@ -100,7 +104,6 @@ h1 {
 #home {
   margin: 0px 5px;
   min-width: 350px;
-  /* border: 2px solid; */
   padding: 5px;
 }
 </style>

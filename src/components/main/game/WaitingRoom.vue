@@ -3,13 +3,20 @@
     <div id="waiting-info" class="center-child-component">
       <p>Your Game-ID is:</p>
 
-      <p style="display: flex; align-items: center;">
+      <p style="display: flex; align-items: center">
         <span id="gameid">{{ this.$store.getters.gameData._id }}</span>
         <button
-          style="font-size: 1em; margin-left: 10px; border: 2px solid; padding: 0.25em"
+          style="
+            font-size: 1em;
+            margin-left: 10px;
+            border: 2px solid;
+            padding: 0.25em;
+          "
           type="button"
           @click="copyGameId"
-        >COPY</button>
+        >
+          COPY
+        </button>
       </p>
 
       <p>share your game-Id with friends</p>
@@ -26,11 +33,25 @@
         v-for="player in playersLookup"
         :key="player.id"
         :class="{ 'light-text': !player.name }"
-      >{{ player.name ? player.name : 'Waiting ...' }}</span>
+        >{{ player.name ? player.name : "Waiting ..." }}</span
+      >
     </div>
     <div class="user-action-div start-cancel">
-      <button class="user-action-btn" type="button" v-if="myCreation" @click="onStartGame">Start</button>
-      <button class="user-action-btn" type="button" @click="onCancelGameCreation">Cancel</button>
+      <button
+        class="user-action-btn"
+        type="button"
+        v-if="myCreation"
+        @click="onStartGame"
+      >
+        Start
+      </button>
+      <button
+        class="user-action-btn"
+        type="button"
+        @click="onCancelGameCreation"
+      >
+        Cancel
+      </button>
     </div>
   </div>
 </template>
@@ -73,17 +94,6 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (max-width: 600px) {
-  .nameboxes {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr 1fr;
-    grid-template-columns: 1fr;
-    border-bottom: 2px solid black;
-    border-left: 2px solid black;
-    margin: 25px 5px;
-  }
-}
-
 .nameboxes {
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -102,6 +112,17 @@ export default {
 .namebox {
   padding: 0.5em;
   font-size: 1.5em;
+}
+
+@media only screen and (max-width: 600px) {
+  .nameboxes {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
+    border-bottom: 2px solid black;
+    border-left: 2px solid black;
+    margin: 25px 5px;
+  }
 }
 
 .start-cancel {

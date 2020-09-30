@@ -2,78 +2,16 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import clonedeep from 'lodash.clonedeep'
+import { DEFAULT_USER_DATA, DEFAULT_GAME_DATA } from './defaults'
 
 Vue.use(Vuex)
 
-const defaultGameData = {
-    // unique identifier sent by the backend
-    _id: null,
-    // is the game 'active' or 'inactive'
-    status: 'inactive',
-    // host
-    createdBy: null,
-
-    // which hand? (1 ... 13)
-    handNumber: null,
-    // which round? (1 ... 5)
-    roundNumber: null,
-
-    cardsOnTable: [],
-
-    myTurn: false,
-    myBetPlaced: false,
-    myBet: 1,
-    myScore: 0,
-    myTotalScore: 0,
-    myCards: [],
-    myValidMoves: [],
-
-    // which playerId's turn
-    turn: null,
-
-    // cards played so far in this game
-    playedHands: [[]],
-
-    // all the scores in all the 5 games
-    scores: [
-        { playerId: null, gameNumber: null, score: null }
-    ],
-
-    // list of all players info for the current game
-    playerList: [
-        {
-            id: null,
-            name: null,
-            bot: null,
-            bet: null,
-            score: null,
-            totalScore: null,
-            betPlaced: false
-        }
-    ]
-}
-
-const defaultUserData = {
-    _id: null,
-    email: null,
-    name: null,
-    token: null
-}
-
-
 export const store = new Vuex.Store({
     state: {
-        user: clonedeep(defaultUserData),
-        game: clonedeep(defaultGameData)
+        user: clonedeep(DEFAULT_USER_DATA),
+        game: clonedeep(DEFAULT_GAME_DATA)
     },
-    /* 
-    STATUS
-    ======
-    inactive
-    joining = Clicked on Join, havent joined yet
-    waiting
-    active
-    */
+
     actions: {
         register({ commit }, userSignUpData) {
             axios
@@ -346,7 +284,7 @@ export const store = new Vuex.Store({
             return playerList
         },
         mycards(state) {
-            return state.game.myCards
+            return { cards: state.game.myCards, validMoves: state.game.myValidMoves };
         },
         cardsOnTable(state) {
             return state.game.cardsOnTable // will fix later
@@ -386,16 +324,16 @@ export const store = new Vuex.Store({
         authUser(state, authData) {
             state.user = authData
             if (!authData) {
-                state.user = clonedeep(defaultUserData)
+                state.user = clonedeep(DEFAULT_USER_DATA)
             }
         },
         resetGame(state) {
-            state.game = clonedeep(defaultGameData)
+            state.game = clonedeep(DEFAULT_GAME_DATA)
             localStorage.removeItem('callbreak-app-game')
         },
         logoutUser(state) {
-            state.user = clonedeep(defaultUserData)
-            state.game = clonedeep(defaultGameData)
+            state.user = clonedeep(DEFAULT_USER_DATA)
+            state.game = clonedeep(DEFAULT_GAME_DATA)
             localStorage.removeItem('callbreak-app-user')
             localStorage.removeItem('callbreak-app-game')
         },
@@ -419,6 +357,7 @@ export const store = new Vuex.Store({
             state.game.myBetPlaced = myData.betPlaced
             state.game.myBet = myData.bet
             state.game.myScore = myData.score
+            state.game.myOts = myData.ots
             state.game.myTotalScore = myData.totalScore
             state.game.myCards = player.cards
             state.game.myValidMoves = player.possibleMoves
@@ -450,7 +389,7 @@ export const store = new Vuex.Store({
             if (gameData && state.user._id && gameData.playerList.map(p => p.id).includes(state.user._id)) {
                 state.game = gameData
             } else {
-                state.game = clonedeep(defaultGameData)
+                state.game = clonedeep(DEFAULT_GAME_DATA)
             }
         },
         showGameJoinOptions(state) {

@@ -1,16 +1,20 @@
 <template>
   <div class="card">
-    <span>{{ cardVal(this.cardvalue) }}</span>
-    <img v-if="this.cardsuit === 'clubs'" src="../../../assets/clubs.png" />
-    <img v-if="this.cardsuit === 'diamonds'" src="../../../assets/diamonds.png" />
-    <img v-if="this.cardsuit === 'hearts'" src="../../../assets/hearts.png" />
-    <img v-if="this.cardsuit === 'spades'" src="../../../assets/spades.png" />
+    <span>{{ cardVal(card.value) }}</span>
+    <!-- need to make public path global -->
+    <img v-if="card.suit === 'clubs'" src="../../../../assets/clubs.png" />
+    <img
+      v-if="card.suit === 'diamonds'"
+      src="../../../../assets/diamonds.png"
+    />
+    <img v-if="card.suit === 'hearts'" src="../../../../assets/hearts.png" />
+    <img v-if="card.suit === 'spades'" src="../../../../assets/spades.png" />
   </div>
 </template>
 
 <script>
 export default {
-  props: ["cardvalue", "cardsuit"],
+  props: ["card"],
   methods: {
     cardVal(val) {
       if (val === "jack") {
@@ -34,13 +38,9 @@ export default {
   justify-content: center;
   align-content: space-between;
   border: 2px solid;
-  min-width: 1em;
-  min-height: 2.5em;
+  width: 18px;
+  height: 35px;
   padding: 0.1em;
   background-color: ivory;
-}
-
-.card:hover {
-  align-self: flex-start;
 }
 </style>
