@@ -43,7 +43,7 @@
 <script>
 import WaitingRoom from "../main/game/WaitingRoom.vue";
 import Join from "../main/game/Join.vue";
-import PlayRoom from "../main/game/PlayRoom/PlayRoom";
+import PlayRoom from "../main/game/PlayRoom";
 
 export default {
   components: {

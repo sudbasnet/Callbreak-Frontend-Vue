@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import Player from "./Player";
-import Card from "./Card";
+import Player from "./CardTableComponents/Player";
+import Card from "./CardTableComponents/Card";
 
 export default {
   methods: {

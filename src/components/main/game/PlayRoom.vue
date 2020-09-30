@@ -35,10 +35,10 @@
 <script>
 // import Card from "./Card";
 // import Player from "./Player";
-import HeadBoard from "./HeadBoard";
-import BettingBoard from "./BettingBoard";
-import GameButtons from "./GameButtons";
-import CardTable from "./CardTable";
+import HeadBoard from "./PlayRoomComponents/HeadBoard";
+import BettingBoard from "./PlayRoomComponents/BettingBoard";
+import GameButtons from "./PlayRoomComponents/GameButtons";
+import CardTable from "./PlayRoomComponents/CardTable";
 
 export default {
   methods: {
