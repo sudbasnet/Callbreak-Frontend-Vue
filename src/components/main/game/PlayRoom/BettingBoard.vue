@@ -3,7 +3,12 @@
     <div class="bet" v-for="player in players" :key="player.id">
       <span>{{ player.name }}</span>
       <div>
-        <span v-for="i in player.bet" :key="i">{{ " " }} █</span>
+        <span
+          v-for="i in player.bet"
+          :key="i"
+          :class="{ 'text-light': i > player.score }"
+          >{{ " " }} █</span
+        >
         <span
           v-if="!myBetPlaced && player.id === userId"
           style="margin-left: 0.25em"
