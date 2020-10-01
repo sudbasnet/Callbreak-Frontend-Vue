@@ -1,7 +1,7 @@
 <template>
-  <div id="home">
+  <div id="home" class="center-child-component">
     <div
-      v-if="gameStatus === 'inactive'"
+      v-if="game.status === 'inactive'"
       id="welcome"
       class="center-child-component"
     >
@@ -32,11 +32,17 @@
       </ul>
     </div>
 
-    <app-join-game v-if="gameStatus === 'joining'"></app-join-game>
+    <app-join-game v-if="game.status === 'joining'"></app-join-game>
 
-    <app-waiting-room v-if="gameStatus === 'waiting'"></app-waiting-room>
+    <app-waiting-room v-if="game.status === 'waiting'"></app-waiting-room>
 
-    <app-play-game v-if="gameStatus === 'active'"></app-play-game>
+    <app-play-game v-if="game.status === 'active' && !newRound"></app-play-game>
+
+    <app-scores
+      class="totalscores"
+      v-if="newRound"
+      :gameId="game._id"
+    ></app-scores>
   </div>
 </template>
 
@@ -44,12 +50,14 @@
 import WaitingRoom from "../main/game/WaitingRoom.vue";
 import Join from "../main/game/Join.vue";
 import PlayRoom from "../main/game/PlayRoom";
+import Scores from "../main/game/Scores";
 
 export default {
   components: {
     "app-waiting-room": WaitingRoom,
     "app-join-game": Join,
     "app-play-game": PlayRoom,
+    "app-scores": Scores,
   },
   methods: {
     onCreateGame() {
@@ -63,13 +71,17 @@ export default {
     },
   },
   computed: {
-    gameStatus() {
-      return this.$store.getters.gameData.status;
+    game() {
+      return this.$store.getters.gameData;
     },
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     },
+    newRound() {
+      return this.game.handNumber === 0 && this.game.roundNumber > 1;
+    },
   },
+  props: ["gameId"],
 };
 </script>
 
@@ -105,5 +117,7 @@ h1 {
   margin: 0px 5px;
   min-width: 350px;
   padding: 5px;
+  justify-items: center;
+  align-items: center;
 }
 </style>

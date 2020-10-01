@@ -1,13 +1,13 @@
 <template>
   <div id="headboard-container">
     <span>{{ player.name }} : {{ player.totalScore }} pts</span>
-    <span>Round: {{ round }}/5</span>
+    <span>Round: {{ round }}/5, Hand: {{ hand }}</span>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["player", "round"],
+  props: ["player", "round", "hand"],
 };
 </script>
 

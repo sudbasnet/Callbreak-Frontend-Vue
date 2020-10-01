@@ -1,34 +1,37 @@
 <template>
-  <div class="play-screen">
-    <app-headboard
-      id="head-scoreboard"
-      :player="playerMe"
-      :round="game.roundNumber"
-    ></app-headboard>
+  <div class="play-room-container center-child-component">
+    <div class="play-screen">
+      <app-headboard
+        id="head-scoreboard"
+        :player="playerMe"
+        :round="game.roundNumber"
+        :hand="game.handNumber"
+      ></app-headboard>
 
-    <app-cardtable
-      :players="game.playerList"
-      :myBetPlaced="game.myBetPlaced"
-      :myTurn="game.myTurn"
-      :cardsOnTable="game.cardsOnTable"
-      :cards="game.myCards"
-      :turn="game.turn"
-      :myIndexInPlayerList="index"
-    ></app-cardtable>
+      <app-cardtable
+        :players="game.playerList"
+        :myBetPlaced="game.myBetPlaced"
+        :myTurn="game.myTurn"
+        :cardsOnTable="game.cardsOnTable"
+        :cards="game.myCards"
+        :turn="game.turn"
+        :myIndexInPlayerList="index"
+      ></app-cardtable>
 
-    <app-bettingboard
-      id="bettingboard"
-      :players="game.playerList"
-      :userId="user._id"
-      :myBetPlaced="game.myBetPlaced"
-    >
-    </app-bettingboard>
+      <app-bettingboard
+        id="bettingboard"
+        :players="game.playerList"
+        :userId="user._id"
+        :myBetPlaced="game.myBetPlaced"
+      >
+      </app-bettingboard>
 
-    <app-buttons
-      id="buttons"
-      :myTurn="game.myTurn"
-      :myBetPlaced="game.myBetPlaced"
-    ></app-buttons>
+      <app-buttons
+        id="buttons"
+        :myTurn="game.myTurn"
+        :myBetPlaced="game.myBetPlaced"
+      ></app-buttons>
+    </div>
   </div>
 </template>
 
@@ -89,6 +92,7 @@ export default {
     "userId",
     "myBetPlaced",
     "round",
+    "hand",
     "cardsOnTable",
     "cards",
     "turn",

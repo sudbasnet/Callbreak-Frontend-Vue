@@ -1,5 +1,5 @@
 <template>
-  <div class="bettingboard-container">
+  <div class="bettingboard-container nameboxes">
     <div class="bet" v-for="player in players" :key="player.id">
       <span>{{ player.name }}</span>
       <div>
