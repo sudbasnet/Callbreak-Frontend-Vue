@@ -12,7 +12,8 @@
               class="nav-link"
               v-if="!loggedInUser"
               active-class="active"
-            >Login</router-link>
+              >Login</router-link
+            >
           </li>
           <li>
             <router-link
@@ -20,21 +21,28 @@
               class="nav-link"
               v-if="!loggedInUser"
               active-class="active"
-            >Register</router-link>
+              >Register</router-link
+            >
           </li>
 
           <li v-if="loggedInUser" class="dropdown-container">
-            <a class="nav-link" @click="toggleDropdown">{{loggedInUser}} ▼</a>
+            <a class="nav-link" @click="toggleDropdown">{{ loggedInUser }} ▼</a>
 
             <ul class="dropdown-items">
-              <li>
-                <router-link class="nav-link" to="/profile">Profile</router-link>
+              <li v-if="!userIsGuest">
+                <router-link class="nav-link" to="/profile"
+                  >Profile</router-link
+                >
+              </li>
+              <li v-if="!userIsGuest">
+                <router-link class="nav-link" to="/account-settings"
+                  >Settings</router-link
+                >
               </li>
               <li>
-                <router-link class="nav-link" to="/account-settings">Settings</router-link>
-              </li>
-              <li>
-                <a class="nav-link" @click="logout">Logout</a>
+                <a class="nav-link" @click="logout">{{
+                  userIsGuest ? "Clear" : "Logout"
+                }}</a>
               </li>
             </ul>
           </li>
@@ -56,6 +64,9 @@ export default {
   computed: {
     loggedInUser() {
       return this.$store.getters.userData.name;
+    },
+    userIsGuest() {
+      return this.$store.getters.userData.userType === "guest";
     },
     isDropdown() {
       console.log(this.dropdown);

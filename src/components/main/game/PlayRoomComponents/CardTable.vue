@@ -21,7 +21,12 @@
     ></app-player>
 
     <div class="cards-on-table" v-if="myBetPlaced">
-      <app-card v-for="c in cardsOnTable" :key="c._id" :card="c"></app-card>
+      <app-card
+        v-for="c in cardsOnTable"
+        :key="c._id"
+        :card="c"
+        :class="`card-${cardTablePosition(c.playedBy)}`"
+      ></app-card>
     </div>
 
     <!-- player 1 -->
@@ -57,6 +62,24 @@ export default {
   methods: {
     playHand(card) {
       this.$store.dispatch("playHand", card);
+    },
+    cardTablePosition(playerId) {
+      console.log(playerId);
+      const pList = this.$store.getters.playerList;
+      const myId = this.$store.getters.userData._id;
+      const myIndex = pList.findIndex((p) => p.id === myId);
+      let position;
+      if (playerId === pList[(myIndex + 1) % 4].id) {
+        position = "right";
+      } else if (playerId === pList[(myIndex + 2) % 4].id) {
+        position = "top";
+      } else if (playerId === pList[(myIndex + 3) % 4].id) {
+        position = "left";
+      } else {
+        position = "bottom";
+      }
+      console.log(position);
+      return position;
     },
   },
   components: {
@@ -123,6 +146,22 @@ export default {
     "card-left   card-top   card-right"
     "card-left  card-bottom card-right"
     ".          card-bottom          .";
+}
+
+.card-top {
+  grid-area: card-top;
+}
+
+.card-right {
+  grid-area: card-right;
+}
+
+.card-left {
+  grid-area: card-left;
+}
+
+.card-bottom {
+  grid-area: card-bottom;
 }
 
 .card-button {

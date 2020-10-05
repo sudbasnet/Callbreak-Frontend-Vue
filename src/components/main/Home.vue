@@ -24,12 +24,26 @@
         <li v-if="isLoggedIn">
           <button class="nav-link" @click="onJoinGame()">Join Game</button>
         </li>
-        <li>
-          <button class="nav-link" @click="onPlayWithBots()">
-            Play With Bots
+        <li v-if="playingAsGuest != true && !isLoggedIn">
+          <button class="nav-link" @click="playingAsGuest = true">
+            Play As Guest
           </button>
         </li>
       </ul>
+      <div v-if="playingAsGuest && !isLoggedIn">
+        <form class="center-child-component">
+          <label for="guestName">And what do we call you?</label>
+          <input type="text" name="guestName" v-model="guestName" />
+          <button
+            type="submit"
+            class="user-action-btn nav-link"
+            @click.prevent="registerGuest"
+          >
+            Submit
+          </button>
+        </form>
+        <div class="user-action-div"></div>
+      </div>
     </div>
 
     <app-join-game v-if="game.status === 'joining'"></app-join-game>
@@ -53,6 +67,12 @@ import PlayRoom from "../main/game/PlayRoom";
 import Scores from "../main/game/Scores";
 
 export default {
+  data() {
+    return {
+      playingAsGuest: false,
+      guestName: "",
+    };
+  },
   components: {
     "app-waiting-room": WaitingRoom,
     "app-join-game": Join,
@@ -66,8 +86,10 @@ export default {
     onJoinGame() {
       this.$store.commit("showGameJoinOptions");
     },
-    onPlayWithBots() {
-      this.$store.dispatch("playWithBots"); // need to fix this
+    registerGuest() {
+      this.playingAsGuest = false;
+      this.$store.dispatch("registerGuest", this.guestName); // need to fix this
+      this.playingAsGuest = false;
     },
   },
   computed: {
@@ -119,5 +141,18 @@ h1 {
   padding: 5px;
   justify-items: center;
   align-items: center;
+}
+
+input {
+  border: 2px solid #4b4a4a;
+  width: 300px;
+  font-size: 1.25em;
+  font-family: inherit;
+  height: 1.5em;
+  padding: 0px 5px;
+}
+
+input:focus {
+  border: 2px solid #000000;
 }
 </style>

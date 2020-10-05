@@ -24,12 +24,25 @@ export const store = new Vuex.Store({
                     console.log(err)
                 })
         },
+        registerGuest({ commit }, guestName) {
+            axios
+                .put("/user/register-guest", { name: guestName })
+                .then((res) => {
+                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, userType: res.data.userType, token: res.data.token }
+                    commit('authUser', authData)
+                    localStorage.setItem('callbreak-app-user', JSON.stringify(authData))
+                })
+                .catch((err) => {
+                    console.log("Error has occured")
+                    console.log(err.message)
+                })
+        },
         // its coming out of context.commit
         login({ commit }, authData) {
             axios
                 .post("/user/login", authData)
                 .then((res) => {
-                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, token: res.data.token }
+                    const authData = { _id: res.data._id, name: res.data.name, email: res.data.email, userType: res.data.userType, token: res.data.token }
                     commit('authUser', authData)
                     localStorage.setItem('callbreak-app-user', JSON.stringify(authData))
                 })

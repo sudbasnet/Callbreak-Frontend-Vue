@@ -51,5 +51,6 @@ export const DEFAULT_USER_DATA = {
     _id: null,
     email: null,
     name: null,
+    userType: null,
     token: null
 }
