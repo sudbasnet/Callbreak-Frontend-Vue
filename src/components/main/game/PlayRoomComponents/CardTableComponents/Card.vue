@@ -1,14 +1,10 @@
 <template>
   <div class="card">
     <span>{{ cardVal(card.value) }}</span>
-    <!-- need to make public path global -->
-    <img v-if="card.suit === 'clubs'" src="../../../../../assets/clubs.png" />
-    <img
-      v-if="card.suit === 'diamonds'"
-      src="../../../../../assets/diamonds.png"
-    />
-    <img v-if="card.suit === 'hearts'" src="../../../../../assets/hearts.png" />
-    <img v-if="card.suit === 'spades'" src="../../../../../assets/spades.png" />
+    <img v-if="card.suit === 'clubs'" src="/img/suits/clubs.png" />
+    <img v-if="card.suit === 'diamonds'" src="/img/suits/diamonds.png" />
+    <img v-if="card.suit === 'hearts'" src="/img/suits/hearts.png" />
+    <img v-if="card.suit === 'spades'" src="/img/suits/spades.png" />
   </div>
 </template>
 

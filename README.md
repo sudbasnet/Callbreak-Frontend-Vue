@@ -1,9 +1,10 @@
 # Callbreak Frontend with VueJS
 
-## alot of things are in-progress 🙂 will keep updating 
+## Things are in-progress 🙂 will keep updating.
+Code for the backend is available [HERE](https://github.com/sudbasnet/Callbreak-Backend-Node-Typescript)
 
-![](./src/assets/mobile.png)
-![](./src/assets/laptop.png)
+![](./public/img/mobile.png)
+![](./public/img/laptop.png)
 
 ## Project setup
 ```
