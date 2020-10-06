@@ -2,7 +2,8 @@
 
 ## alot of things are in-progress 🙂 will keep updating 
 
-![](./src/assets/cardgame.png)
+![](./src/assets/mobile.png)
+![](./src/assets/laptop.png)
 
 ## Project setup
 ```
