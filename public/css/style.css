@@ -263,29 +263,52 @@ a.disabled {
 
 .card-on-table-left{
   grid-area: card-on-table-left;
+  align-self: center;
+  justify-self: center;
 }
 
 .card-on-table-right{
   grid-area: card-on-table-right;
+  align-self: center;
+  justify-self: center;
 }
 
 .card-on-table-top{
   grid-area: card-on-table-top;
+  align-self: center;
+  justify-self: center;
 }
 
 .card-on-table-bottom{
   grid-area: card-on-table-bottom;
+  align-self: center;
+  justify-self: center;
 }
 
 .game-my-cards {
   grid-area: my-cards;
 }
 
-.nameboxes {
+.playerboxes {
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
-  border-bottom: 2px solid black;
-  border-left: 2px solid black;
-  margin: 25px 5px;
+  justify-content: center;
+  justify-items: center;
+}
+
+.playerbox {
+  width: 332px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-cards {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 100%; */
+  height: 100%;
 }

@@ -3,9 +3,17 @@
     <span :class="{ 'active-player': turn === player.id }">{{
       player.name
     }}</span>
-    <div class="empty-card" :class="{ 'active-player': turn === player.id }">
-      Cards
-    </div>
+
+    <img
+      :src="
+        '/img/players/' +
+        (position === 'right'
+          ? 'p1.png'
+          : position === 'top'
+          ? 'p2.png'
+          : 'p3.png')
+      "
+    />
   </div>
 </template>
 
@@ -23,10 +31,17 @@ export default {
 </script>
 
 <style scoped>
+div {
+  display: flex;
+  flex-direction: column;
+}
+
+div > img {
+  min-width: 50px;
+  image-rendering: optimizeSpeed;
+}
+
 .empty-card {
-  height: 4em;
-  width: 2.75em;
-  border: 3px solid;
   display: grid;
   justify-content: center;
   align-content: center;

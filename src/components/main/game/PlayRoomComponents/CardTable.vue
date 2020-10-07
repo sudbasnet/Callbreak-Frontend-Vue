@@ -19,6 +19,7 @@
 
     <div class="my-cards">
       <button
+        class="card-button"
         v-for="mycard in cards"
         :key="mycard._id"
         :disabled="!myBetPlaced || !myTurn"
@@ -135,9 +136,9 @@ export default {
 .card-bottom {
   grid-area: card-bottom;
 }
-
+*/
 .card-button {
   border: none;
   margin: 0.1em;
-} */
+}
 </style>

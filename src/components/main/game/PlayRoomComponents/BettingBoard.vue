@@ -1,8 +1,8 @@
 <template>
-  <div class="play-screen-scores">
-    <div class="bet" v-for="player in players" :key="player.id">
+  <div class="play-screen-scores playerboxes">
+    <div class="playerbox" v-for="player in players" :key="player.id">
       <span>{{ player.name }}</span>
-      <div>
+      <span>
         <span
           v-for="i in player.bet"
           :key="i"
@@ -19,7 +19,7 @@
         <span v-if="myBetPlaced" class="ot text-light">{{
           ` .${player.ots}`
         }}</span>
-      </div>
+      </span>
     </div>
   </div>
 </template>

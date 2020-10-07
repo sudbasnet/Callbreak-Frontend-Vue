@@ -34,9 +34,16 @@ export default {
   justify-content: center;
   align-content: space-between;
   border: 2px solid;
-  width: 18px;
-  height: 35px;
+  width: 25px;
+  height: 48px;
   padding: 0.1em;
   background-color: ivory;
+}
+
+@media only screen and (max-width: 510px) {
+  .card {
+    width: 18px;
+    height: 38px;
+  }
 }
 </style>
