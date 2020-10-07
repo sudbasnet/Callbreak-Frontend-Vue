@@ -1,5 +1,5 @@
 <template>
-  <div id="headboard-container">
+  <div class="play-screen-totals">
     <span>{{ player.name }} : {{ player.totalScore }} pts</span>
     <span>Round: {{ round }}/5, Hand: {{ hand }}</span>
   </div>
@@ -12,7 +12,7 @@ export default {
 </script>
 
 <style scoped>
-div {
+/* div {
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -21,5 +21,5 @@ div {
 
 div > span {
   padding: 0.5em;
-}
+} */
 </style>

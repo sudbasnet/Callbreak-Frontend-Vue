@@ -1,5 +1,5 @@
 <template>
-  <div class="score-display-all">
+  <div class="main-scores">
     <div class="nameboxes">
       <span class="namebox" v-for="p in playerList" :key="p.id"
         >{{ `${p.name}: ${p.totalScore}` }}
@@ -40,7 +40,7 @@ export default {
 </script>
 
 <style scoped>
-.score-display-all {
+/* .score-display-all {
   background-color: ivory;
   min-height: 400px;
   min-width: 250px;
@@ -48,5 +48,5 @@ export default {
   z-index: 100;
   display: grid;
   align-items: center;
-}
+} */
 </style>

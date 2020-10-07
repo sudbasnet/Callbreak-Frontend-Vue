@@ -1,23 +1,11 @@
 <template>
-  <div class="card-table-container">
-    <!-- player 2 -->
+  <div class="play-screen-game">
     <app-player
-      id="p-top"
-      v-if="myBetPlaced"
+      v-for="player in players"
+      :key="player.id"
+      :player="player"
       :turn="turn"
-      :myIndexInPlayerList="myIndexInPlayerList"
-      :players="players"
-      :indexDelta="2"
-    ></app-player>
-
-    <!-- player 3 -->
-    <app-player
-      id="p-left"
-      v-if="myBetPlaced"
-      :turn="turn"
-      :myIndexInPlayerList="myIndexInPlayerList"
-      :players="players"
-      :indexDelta="3"
+      :position="cardTablePosition(player.id)"
     ></app-player>
 
     <div class="cards-on-table" v-if="myBetPlaced">
@@ -25,28 +13,16 @@
         v-for="c in cardsOnTable"
         :key="c._id"
         :card="c"
-        :class="`card-${cardTablePosition(c.playedBy)}`"
+        :position="cardTablePosition(c.playedBy)"
       ></app-card>
     </div>
 
-    <!-- player 1 -->
-    <app-player
-      id="p-right"
-      v-if="myBetPlaced"
-      :turn="turn"
-      :myIndexInPlayerList="myIndexInPlayerList"
-      :players="players"
-      :indexDelta="1"
-    ></app-player>
-
-    <!-- player 0 -->
-    <div id="p-me">
+    <div class="my-cards">
       <button
-        class="card-button"
         v-for="mycard in cards"
         :key="mycard._id"
-        @click="playHand(mycard)"
         :disabled="!myBetPlaced || !myTurn"
+        @click="playHand(mycard)"
       >
         <app-card :card="mycard"></app-card>
       </button>
@@ -64,22 +40,18 @@ export default {
       this.$store.dispatch("playHand", card);
     },
     cardTablePosition(playerId) {
-      console.log(playerId);
       const pList = this.$store.getters.playerList;
       const myId = this.$store.getters.userData._id;
       const myIndex = pList.findIndex((p) => p.id === myId);
-      let position;
       if (playerId === pList[(myIndex + 1) % 4].id) {
-        position = "right";
+        return "right";
       } else if (playerId === pList[(myIndex + 2) % 4].id) {
-        position = "top";
+        return "top";
       } else if (playerId === pList[(myIndex + 3) % 4].id) {
-        position = "left";
+        return "left";
       } else {
-        position = "bottom";
+        return "bottom";
       }
-      console.log(position);
-      return position;
     },
   },
   components: {
@@ -95,13 +67,13 @@ export default {
     "card",
     "indexDelta",
     "turn",
-    "myIndexInPlayerList",
+    "position",
   ],
 };
 </script>
 
 <style scoped>
-.card-table-container {
+/* .card-table-container {
   grid-area: card-table;
   display: grid;
   justify-items: center;
@@ -167,5 +139,5 @@ export default {
 .card-button {
   border: none;
   margin: 0.1em;
-}
+} */
 </style>

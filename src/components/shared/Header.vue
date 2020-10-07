@@ -1,10 +1,11 @@
 <template>
-  <header class="header">
+  <header class="header-area">
     <nav class="nav">
       <div class="navbar-block">
         <router-link to="/" tag="h1">
           <a class="home-link active">CallBreak</a>
         </router-link>
+
         <ul class="nav-links">
           <li>
             <router-link

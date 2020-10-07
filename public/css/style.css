@@ -11,17 +11,9 @@
 body{
     font-family: 'munro';
     background-color: #ffffff;
+    height: 100vh;
 }
 
-#app{
-    display: grid;
-    grid-template-columns: 1fr minmax(100px, 1200px) 1fr;
-    grid-template-rows: 10vh 80vh 10vh;
-    grid-template-areas:
-        "header header header"
-        ".       main       ."
-        "footer footer footer";
-}
 
 .header {
     grid-area: header;
@@ -88,6 +80,7 @@ a.disabled {
     height: 100%;
 }
 
+/* 
 .main {
     grid-area: main;
     display: grid;
@@ -110,7 +103,7 @@ a.disabled {
     padding: 20px;
   }
 
-  .login-form-group, .register-form-group {
+.login-form-group, .register-form-group {
       display: grid;
   }
 
@@ -161,4 +154,138 @@ a.disabled {
       border-left: 2px solid black;
       margin: 25px 5px;
     }
-  }
+  } */
+
+.wrapper {
+    display: grid;
+    grid-template-rows: minmax(65px, 90px) minmax(590px, 610px) minmax(60px, 1fr);
+    grid-template-columns: 1fr minmax(338px, 520px) 1fr; 
+    grid-template-areas:
+    "header-area header-area header-area"
+    ". main-area ."
+    ". footer-area .";
+    height: 100%;
+}
+
+.header-area {
+  grid-area: header-area;
+}
+
+.main-area {
+  grid-area: main-area;
+  display: grid;
+  height: 100%;
+  width: 100%;
+}
+
+.footer-area {
+  grid-area: footer-area;
+}
+
+.main-home{
+  height:100%;
+  width:100%;
+  display: grid;
+}
+
+.home-play-screen {
+  display: grid;
+  width:100%;
+  height: 100%;
+  grid-template-rows: 40px minmax(336px, 360px) 142px 60px;
+  grid-template-areas:
+  "play-screen-totals"
+  "play-screen-game"
+  "play-screen-scores"
+  "play-screen-buttons";
+}
+
+.play-screen-game {
+  display: grid;
+  grid-area: play-screen-game;
+  grid-template-rows: minmax(114px, 120px) minmax(127px, 1fr) minmax(70px, 83px);
+  grid-template-columns: minmax(108px, 1fr) minmax(113px, 168px) minmax(108px, 1fr);
+  grid-template-areas:
+  "p-top p-top p-top"
+  "p-left cards-on-table p-right"
+  "my-cards my-cards my-cards";
+}
+
+.cards-on-table {
+  grid-area: cards-on-table;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-areas:
+    ".                    card-on-table-top            ."
+    "card-on-table-left   card-on-table-top   card-on-table-right"
+    "card-on-table-left  card-on-table-bottom card-on-table-right"
+    ".                   card-on-table-bottom          .";
+}
+
+.play-screen-totals {
+  grid-area: play-screen-totals;
+}
+
+.play-screen-scores {
+  grid-area: play-screen-scores;
+}
+
+.play-screen-buttons {
+  grid-area: play-screen-buttons;
+}
+
+.p-top {
+  grid-area: p-top;
+  align-self: center;
+  justify-self: center;
+}
+
+.p-left{
+  grid-area: p-left;
+  align-self: center;
+  justify-self: center;
+}
+
+.game-cards-on-table {
+  grid-area: cards-on-table;
+}
+
+.p-right{
+  grid-area: p-right;
+  align-self: center;
+  justify-self: center;
+}
+
+.my-cards{
+  grid-area: my-cards
+}
+
+.card-on-table-left{
+  grid-area: card-on-table-left;
+}
+
+.card-on-table-right{
+  grid-area: card-on-table-right;
+}
+
+.card-on-table-top{
+  grid-area: card-on-table-top;
+}
+
+.card-on-table-bottom{
+  grid-area: card-on-table-bottom;
+}
+
+.game-my-cards {
+  grid-area: my-cards;
+}
+
+.nameboxes {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
+  border-bottom: 2px solid black;
+  border-left: 2px solid black;
+  margin: 25px 5px;
+}

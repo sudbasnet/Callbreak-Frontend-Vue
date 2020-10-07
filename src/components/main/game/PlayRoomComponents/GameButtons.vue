@@ -1,5 +1,5 @@
 <template>
-  <div class="buttons-container">
+  <div class="play-screen-buttons">
     <span id="cancel" class="user-action-div">
       <button class="user-action-btn" type="button" @click="cancelGameCreation">
         Cancel
@@ -28,11 +28,11 @@ export default {
 </script>
 
 <style scoped>
-.buttons-container {
+/* .buttons-container {
   display: flex;
   flex-direction: row;
   width: 100%;
   align-items: center;
   justify-content: space-around;
-}
+} */
 </style>

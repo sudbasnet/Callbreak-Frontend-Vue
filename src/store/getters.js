@@ -53,6 +53,22 @@ const getters = {
     },
     createdBy(state) {
         return state.game.createdBy
+    },
+    getPlayerPosition(state, playerId) {
+        if (playerId === state.user._id) {
+            return 'bottom';
+        }
+        const players = state.game.playerList;
+        const myIndex = players.findIndex(p => p.id === state.user._id);
+        const playerIndex = players.findIndex(p => p.id === playerId);
+        const diff = myIndex - playerIndex;
+        if (diff === -1 || diff === 4) {
+            return 'right';
+        } else if (diff === 1 || diff === -4) {
+            return 'left';
+        } else {
+            return 'top';
+        }
     }
 
 };

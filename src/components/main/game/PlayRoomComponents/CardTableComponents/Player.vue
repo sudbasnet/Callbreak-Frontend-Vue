@@ -1,5 +1,5 @@
 <template>
-  <div class="player-container">
+  <div v-if="position != 'bottom'" :class="`p-${position}`">
     <span :class="{ 'active-player': turn === player.id }">{{
       player.name
     }}</span>
@@ -11,10 +11,12 @@
 
 <script>
 export default {
-  props: ["players", "indexDelta", "turn", "myIndexInPlayerList"],
+  props: ["player", "position", "turn"],
   computed: {
-    player() {
-      return this.players[(this.myIndexInPlayerList + this.indexDelta) % 4];
+    playerPosition() {
+      const x = this.$store.getters.getPlayerPosition(this.player.id);
+      console.log(x);
+      return x;
     },
   },
 };

@@ -1,13 +1,13 @@
 <template>
-  <footer class="footer">
+  <footer class="footer-area">
     <ul class="footer-links">
       <li>
-        <a class="footer-link" href="https://github.com/sudbasnet/Callbreak-Frontend-Vue">Github</a>
+        <a
+          class="footer-link"
+          href="https://github.com/sudbasnet/Callbreak-Frontend-Vue"
+          >Github</a
+        >
       </li>
-      <!-- <li>
-        <a class="footer-link" href="https://www.linkedin.com/in/sudeepbasnet/">LinkedIn</a>
-      </li>-->
-      <li></li>
     </ul>
   </footer>
 </template>

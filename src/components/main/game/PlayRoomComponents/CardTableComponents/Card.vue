@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" :class="`card-on-table-${position}`">
     <span>{{ cardVal(card.value) }}</span>
     <img v-if="card.suit === 'clubs'" src="/img/suits/clubs.png" />
     <img v-if="card.suit === 'diamonds'" src="/img/suits/diamonds.png" />
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ["card"],
+  props: ["card", "position"],
   methods: {
     cardVal(val) {
       if (val === "jack") {

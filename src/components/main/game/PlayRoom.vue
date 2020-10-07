@@ -1,37 +1,33 @@
 <template>
-  <div class="play-room-container center-child-component">
-    <div class="play-screen">
-      <app-headboard
-        id="head-scoreboard"
-        :player="playerMe"
-        :round="game.roundNumber"
-        :hand="game.handNumber"
-      ></app-headboard>
+  <div class="home-play-screen">
+    <!-- ho to get rid of this div? -->
+    <app-headboard
+      :player="playerMe"
+      :round="game.roundNumber"
+      :hand="game.handNumber"
+    ></app-headboard>
 
-      <app-cardtable
-        :players="game.playerList"
-        :myBetPlaced="game.myBetPlaced"
-        :myTurn="game.myTurn"
-        :cardsOnTable="game.cardsOnTable"
-        :cards="game.myCards"
-        :turn="game.turn"
-        :myIndexInPlayerList="index"
-      ></app-cardtable>
+    <app-cardtable
+      :players="game.playerList"
+      :myBetPlaced="game.myBetPlaced"
+      :myTurn="game.myTurn"
+      :cardsOnTable="game.cardsOnTable"
+      :cards="game.myCards"
+      :turn="game.turn"
+    >
+    </app-cardtable>
 
-      <app-bettingboard
-        id="bettingboard"
-        :players="game.playerList"
-        :userId="user._id"
-        :myBetPlaced="game.myBetPlaced"
-      >
-      </app-bettingboard>
+    <app-bettingboard
+      :players="game.playerList"
+      :userId="user._id"
+      :myBetPlaced="game.myBetPlaced"
+    >
+    </app-bettingboard>
 
-      <app-buttons
-        id="buttons"
-        :myTurn="game.myTurn"
-        :myBetPlaced="game.myBetPlaced"
-      ></app-buttons>
-    </div>
+    <app-buttons
+      :myTurn="game.myTurn"
+      :myBetPlaced="game.myBetPlaced"
+    ></app-buttons>
   </div>
 </template>
 
@@ -96,13 +92,12 @@ export default {
     "cardsOnTable",
     "cards",
     "turn",
-    "myIndexInPlayerList",
   ],
 };
 </script>
 
 <style scoped>
-.play-screen {
+/* .play-screen {
   min-height: 400px;
   display: grid;
   grid-template-rows: 50px minmax(245px, 400px) minmax(176px, 200px) minmax(
@@ -129,7 +124,7 @@ export default {
 
 #buttons {
   grid-area: buttons;
-}
+} */
 
 /* #scoreboards {
   display: grid;

@@ -1,5 +1,5 @@
 <template>
-  <div class="bettingboard-container nameboxes">
+  <div class="play-screen-scores">
     <div class="bet" v-for="player in players" :key="player.id">
       <span>{{ player.name }}</span>
       <div>
@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-.bettingboard-container {
+/* .bettingboard-container {
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
@@ -81,5 +81,5 @@ export default {
     border-left: 2px solid black;
     margin: 25px 5px;
   }
-}
+} */
 </style>
