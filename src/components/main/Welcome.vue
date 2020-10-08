@@ -12,19 +12,24 @@
       join your game, you can choose to add bots.
     </p>
 
-    <ul>
+    <ul style="list-style: none">
       <li v-if="isLoggedIn">
-        <button class="nav-link" @click="onCreateGame()">Create Game</button>
+        <button class="user-action-btn nav-link" @click="onCreateGame()">
+          Create Game
+        </button>
       </li>
       <li v-if="isLoggedIn">
-        <button class="nav-link" @click="onJoinGame()">Join Game</button>
+        <button class="user-action-btn nav-link" @click="onJoinGame()">
+          Join Game
+        </button>
       </li>
       <li v-if="playingAsGuest != true && !isLoggedIn">
-        <button class="nav-link" @click="playingAsGuest = true">
+        <button class="user-action-btn nav-link" @click="playingAsGuest = true">
           Play As Guest
         </button>
       </li>
     </ul>
+
     <div v-if="playingAsGuest && !isLoggedIn">
       <form class="center-child-component">
         <label for="guestName">And what do we call you?</label>
@@ -37,7 +42,6 @@
           Submit
         </button>
       </form>
-      <div class="user-action-div"></div>
     </div>
   </div>
 </template>
@@ -67,3 +71,21 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.light-text {
+  color: #868e96;
+}
+
+button {
+  border: none;
+  font-family: inherit;
+  background-color: transparent;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+p {
+  padding: 0.5em;
+}
+</style>

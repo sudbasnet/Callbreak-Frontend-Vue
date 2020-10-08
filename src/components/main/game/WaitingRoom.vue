@@ -27,9 +27,9 @@
       </div>-->
     </div>
 
-    <div class="nameboxes">
+    <div class="playerboxes">
       <span
-        class="namebox"
+        class="playerbox"
         v-for="player in playersLookup"
         :key="player.id"
         :class="{ 'light-text': !player.name }"
@@ -40,17 +40,17 @@
       <button
         class="user-action-btn"
         type="button"
-        v-if="myCreation"
-        @click="onStartGame"
+        @click="onCancelGameCreation"
       >
-        Start
+        Cancel
       </button>
       <button
         class="user-action-btn"
         type="button"
-        @click="onCancelGameCreation"
+        v-if="myCreation"
+        @click="onStartGame"
       >
-        Cancel
+        Start
       </button>
     </div>
   </div>
@@ -94,8 +94,6 @@ export default {
 </script>
 
 <style scoped>
-
-
 .start-cancel {
   grid-template-columns: 1fr 1fr;
 }
@@ -118,5 +116,9 @@ button {
 
 #waiting-info > p {
   padding: 0.5em;
+}
+
+.playerboxes {
+  height: 135px;
 }
 </style>
