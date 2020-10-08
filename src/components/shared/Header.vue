@@ -27,7 +27,7 @@
           </li>
 
           <li v-if="loggedInUser" class="dropdown-container">
-            <a class="nav-link" @click="toggleDropdown">{{ loggedInUser }} ▼</a>
+            <a class="nav-link" @click="toggleDropdown">Options ▼</a>
 
             <ul class="dropdown-items">
               <li v-if="!userIsGuest">

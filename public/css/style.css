@@ -15,13 +15,6 @@ body{
 }
 
 
-.header {
-    grid-area: header;
-    display: grid;
-    grid-template-columns: 1fr minmax(300px, 1200px) 1fr;
-    grid-template-areas: ". nav .";
-}
-
 .navbar-block {
     display: flex;
     height: 100%;
@@ -80,20 +73,6 @@ a.disabled {
     height: 100%;
 }
 
-/* 
-.main {
-    grid-area: main;
-    display: grid;
-    justify-items: center;
-    align-items: center;
-
-}
-
-.footer {
-    grid-area: footer;
-    margin-bottom: 0;
-}
-
 .login-form, .register-form {
     max-width: 520px;
     min-width: 300px;
@@ -125,6 +104,7 @@ a.disabled {
     color: #868e96;
   }
 
+  /*
   .nameboxes {
     display: grid;
     grid-template-rows: 1fr 1fr;
@@ -158,8 +138,8 @@ a.disabled {
 
 .wrapper {
     display: grid;
-    grid-template-rows: minmax(65px, 90px) minmax(590px, 610px) minmax(60px, 1fr);
-    grid-template-columns: 1fr minmax(338px, 520px) 1fr; 
+    grid-template-rows: minmax(62px, 90px) minmax(560px, 610px) minmax(55px, 1fr);
+    grid-template-columns: 1fr minmax(335px, 450px) 1fr; 
     grid-template-areas:
     "header-area header-area header-area"
     ". main-area ."
@@ -169,30 +149,39 @@ a.disabled {
 
 .header-area {
   grid-area: header-area;
+  display: grid;
+  grid-template-columns: 1fr minmax(340px, 800px) 1fr;
+  grid-template-areas: ". nav .";
 }
+
 
 .main-area {
   grid-area: main-area;
-  display: grid;
+  /* display: grid; */
   height: 100%;
   width: 100%;
+  /* padding: 5px; */
 }
 
 .footer-area {
+  height:100%;
   grid-area: footer-area;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .main-home{
   height:100%;
   width:100%;
-  display: grid;
+  /* display: grid; */
 }
 
 .home-play-screen {
   display: grid;
   width:100%;
   height: 100%;
-  grid-template-rows: 40px minmax(336px, 360px) 142px 60px;
+  grid-template-rows: minmax(30px, 40px) minmax(320px, 360px) minmax(135px, 142px) minmax(55px, 60px);
   grid-template-areas:
   "play-screen-totals"
   "play-screen-game"
@@ -203,8 +192,8 @@ a.disabled {
 .play-screen-game {
   display: grid;
   grid-area: play-screen-game;
-  grid-template-rows: minmax(114px, 120px) minmax(127px, 1fr) minmax(70px, 83px);
-  grid-template-columns: minmax(108px, 1fr) minmax(113px, 168px) minmax(108px, 1fr);
+  grid-template-rows: minmax(112px, 120px) minmax(125px, 1fr) minmax(68px, 83px);
+  grid-template-columns: minmax(105px, 1fr) minmax(110px, 168px) minmax(105px, 1fr);
   grid-template-areas:
   "p-top p-top p-top"
   "p-left cards-on-table p-right"
@@ -225,6 +214,10 @@ a.disabled {
 
 .play-screen-totals {
   grid-area: play-screen-totals;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .play-screen-scores {
@@ -233,6 +226,9 @@ a.disabled {
 
 .play-screen-buttons {
   grid-area: play-screen-buttons;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
 }
 
 .p-top {
@@ -298,7 +294,7 @@ a.disabled {
 }
 
 .playerbox {
-  width: 332px;
+  width: 300px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
