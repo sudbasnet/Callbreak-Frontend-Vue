@@ -27,15 +27,18 @@
       </div>-->
     </div>
 
-    <div class="playerboxes">
-      <span
-        class="playerbox"
-        v-for="player in playersLookup"
-        :key="player.id"
-        :class="{ 'light-text': !player.name }"
-        >{{ player.name ? player.name : "Waiting ..." }}</span
-      >
+    <div id="waitingboxes-container">
+      <div class="waitingboxes">
+        <span
+          class="waitingbox"
+          v-for="player in playersLookup"
+          :key="player.id"
+          :class="{ 'light-text': !player.name }"
+          >{{ player.name ? player.name : "Waiting ..." }}</span
+        >
+      </div>
     </div>
+
     <div class="user-action-div start-cancel">
       <button
         class="user-action-btn"
@@ -120,5 +123,27 @@ button {
 
 .playerboxes {
   height: 135px;
+}
+
+#waiting-room {
+  padding-top: 2em;
+}
+
+#waitingboxes-container {
+  width: 332px;
+  padding: 2em;
+}
+
+.waitingbox {
+  font-size: 1.5em;
+  padding: 0.3em;
+  width: 100%;
+}
+
+.waitingboxes {
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  justify-content: center;
+  width: 100%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="register-page center-child-component">
     <form class="register-form">
       <div class="register-form-group">
         <label for="name">Player Name</label>
@@ -11,14 +11,24 @@
       </div>
       <div class="register-form-group">
         <label for="password">Password</label>
-        <input type="password" name="password" v-model="registrationInfo.password" />
+        <input
+          type="password"
+          name="password"
+          v-model="registrationInfo.password"
+        />
       </div>
       <div class="register-form-group">
         <label for="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" v-model="registrationInfo.confirmPassword" />
+        <input
+          type="password"
+          name="confirmPassword"
+          v-model="registrationInfo.confirmPassword"
+        />
       </div>
       <div class="user-action-div">
-        <button class="user-action-btn" @click.prevent="register">Register</button>
+        <button class="user-action-btn" @click.prevent="register">
+          Register
+        </button>
       </div>
     </form>
   </div>
@@ -66,5 +76,9 @@ button {
 
 label {
   padding-bottom: 0.5em;
+}
+
+.register-page {
+  padding-top: 2em;
 }
 </style>

@@ -97,7 +97,9 @@ a.disabled {
     border: none;
     font-family: inherit;
     background-color: transparent;
+    text-decoration: underline;
     font-size: 2em;
+    padding: 10px;
   }
 
   .text-light {
@@ -286,6 +288,7 @@ a.disabled {
 }
 
 .playerboxes {
+  height: 100%;
   display: grid;
   grid-template-rows: 1fr 1fr 1fr 1fr;
   grid-template-columns: 1fr;
@@ -301,10 +304,21 @@ a.disabled {
   justify-content: space-between;
 }
 
+
 .my-cards {
   display: flex;
   align-items: center;
   justify-content: center;
   /* width: 100%; */
   height: 100%;
+}
+
+.large-text {
+  font-size: 2.5em;
+}
+
+.info-text{
+  text-align: center;
+  opacity: 0.6;
+  margin: 1em;
 }

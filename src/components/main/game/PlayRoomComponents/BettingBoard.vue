@@ -1,25 +1,27 @@
 <template>
-  <div class="play-screen-scores playerboxes">
-    <div class="playerbox" v-for="player in players" :key="player.id">
-      <span>{{ player.name }}</span>
-      <span>
-        <span
-          v-for="i in player.bet"
-          :key="i"
-          :class="{ 'text-light': i > player.score }"
-          >{{ " " }} █</span
-        >
-        <span
-          v-if="!myBetPlaced && player.id === userId"
-          style="margin-left: 0.25em"
-        >
-          <button class="bet-control" @click="decreaseBet">-</button>
-          <button class="bet-control" @click="increaseBet">+</button>
+  <div class="play-screen-scores">
+    <div class="playerboxes">
+      <div class="playerbox" v-for="player in players" :key="player.id">
+        <span>{{ player.name }}</span>
+        <span>
+          <span
+            v-for="i in player.bet"
+            :key="i"
+            :class="{ 'text-light': i > player.score }"
+            >{{ " " }} █</span
+          >
+          <span
+            v-if="!myBetPlaced && player.id === userId"
+            style="margin-left: 0.25em"
+          >
+            <button class="bet-control" @click="decreaseBet">-</button>
+            <button class="bet-control" @click="increaseBet">+</button>
+          </span>
+          <span v-if="myBetPlaced" class="ot text-light">{{
+            ` .0${player.ots}`
+          }}</span>
         </span>
-        <span v-if="myBetPlaced" class="ot text-light">{{
-          ` .${player.ots}`
-        }}</span>
-      </span>
+      </div>
     </div>
   </div>
 </template>
@@ -59,14 +61,6 @@ export default {
   border-right: 2px solid black;
 }
 
-.bet-control {
-  border: none;
-  background-color: none;
-  padding: 0px 0.5em;
-  font-family: inherit;
-  margin: 0px 2px;
-}
-
 .ot {
   align-self: flex-end;
   justify-self: end;
@@ -82,4 +76,13 @@ export default {
     margin: 25px 5px;
   }
 } */
+.bet-control {
+  border: none;
+  background-color: none;
+  width: 25px;
+  height: 25px;
+  /* padding: ; */
+  font-family: inherit;
+  margin: 0px 2px;
+}
 </style>

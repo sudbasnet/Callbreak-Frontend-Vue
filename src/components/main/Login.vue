@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="login-page center-child-component">
     <form class="login-form">
       <div class="login-form-group">
         <label for="email">E-mail:</label>
@@ -10,10 +10,14 @@
         <input type="password" name="password" v-model="loginInfo.password" />
       </div>
       <div>
-        <router-link class="non-nav-link" to="/forgot-password">Forgot Password</router-link>
+        <router-link class="non-nav-link" to="/forgot-password"
+          >Forgot Password</router-link
+        >
       </div>
       <div class="user-action-div">
-        <button class="user-action-btn" type="submit" @click.prevent="login">Login</button>
+        <button class="user-action-btn" type="submit" @click.prevent="login">
+          Login
+        </button>
       </div>
     </form>
   </div>
@@ -71,5 +75,9 @@ label {
 
 .non-nav-link:hover {
   color: #292b2c;
+}
+
+.login-page {
+  padding-top: 2em;
 }
 </style>

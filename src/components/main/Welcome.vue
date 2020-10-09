@@ -1,32 +1,40 @@
 <template>
   <div class="center-child-component">
-    <h1>Welcome to Callbreak</h1>
+    <p class="large-text">Welcome</p>
 
-    <p v-if="!isLoggedIn">
-      You can only play with bots when you are not logged in. Please be aware
-      that you might loose all game progress if you close your page during the
-      game, please log-in for better experience.
+    <p class="info-text" v-if="!isLoggedIn">
+      You can either register and log-in or play as guest. You can directly
+      invite friends from your friend-list when you are logged in.
     </p>
-    <p v-if="isLoggedIn">
+
+    <p class="info-text" v-if="!isLoggedIn">
+      If you are not logged in, you might loose all game progress if you stay
+      inactive for a few days, please log-in for better experience.
+    </p>
+
+    <p class="info-text" v-if="isLoggedIn">
       This is a four-player game, if you do not have enough players who want to
       join your game, you can choose to add bots.
     </p>
 
-    <ul style="list-style: none">
+    <ul class="center-child-component" style="list-style: none">
       <li v-if="isLoggedIn">
-        <button class="user-action-btn nav-link" @click="onCreateGame()">
+        <button class="user-action-btn" @click="onCreateGame()">
           Create Game
         </button>
       </li>
       <li v-if="isLoggedIn">
-        <button class="user-action-btn nav-link" @click="onJoinGame()">
-          Join Game
+        <button class="user-action-btn" @click="onJoinGame()">Join Game</button>
+      </li>
+      <li v-if="playingAsGuest != true && !isLoggedIn">
+        <button class="user-action-btn" @click="playingAsGuest = true">
+          Play As Guest
         </button>
       </li>
       <li v-if="playingAsGuest != true && !isLoggedIn">
-        <button class="user-action-btn nav-link" @click="playingAsGuest = true">
-          Play As Guest
-        </button>
+        <router-link to="/login" tag="button" class="user-action-btn"
+          >Login</router-link
+        >
       </li>
     </ul>
 
