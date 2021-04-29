@@ -30,7 +30,7 @@ export const DEFAULT_GAME_DATA = {
 
     // all the scores in all the 5 games
     scores: [
-        { playerId: null, gameNumber: null, score: null }
+        { id: null, gameNumber: null, score: null }
     ],
 
     // list of all players info for the current game
